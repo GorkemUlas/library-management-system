@@ -1,24 +1,17 @@
 package com.lms.backend.library.dto;
 
-// Validation importları
-import jakarta.validation.constraints.NotBlank;
+public class BookResponseDto {
 
-public class BookDto {
-/* DTO kullanana entitynin sadece görmesini istediklerimizi göstermek için var controller ve service te parametre olarak entity yerine  */
-    // alanlar boş olamaz
-    @NotBlank(message = "Title cannot be empty")
+    private Long id;
     private String title;
-
-    @NotBlank(message = "Author cannot be empty")
     private String author;
-
-    @NotBlank(message = "Status cannot be empty")
     private String status;
-
-    @NotBlank(message = "Category cannot be empty")
     private String category;
 
     // Getter & Setter
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 

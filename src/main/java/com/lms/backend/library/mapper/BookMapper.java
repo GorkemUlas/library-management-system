@@ -1,8 +1,11 @@
 package com.lms.backend.library.mapper;
 
-import com.lms.backend.library.dto.BookDto;
+import com.lms.backend.library.dto.BookRequestDto;
+import com.lms.backend.library.dto.BookResponseDto;
 import com.lms.backend.library.entity.Book;
 import org.mapstruct.Mapper;
+
+import java.util.List;
 
 /**
  * @Mapper → MapStruct'a bu interface'in bir mapper olduğunu söyler.
@@ -12,15 +15,9 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface BookMapper {
 
-    /**
-     * DTO → Entity dönüşümü
-     * MapStruct bunu otomatik olarak implement eder.
-     */
-    Book toEntity(BookDto dto);
+    Book toEntity(BookRequestDto dto);
 
-    /**
-     * Entity → DTO dönüşümü
-     * Şimdilik kullanmasan bile ileride çok işine yarar.
-     */
-    BookDto toDto(Book entity);
+    BookResponseDto toResponseDto(Book book);
+
+    List<BookResponseDto> toResponseDtoList(List<Book> books);
 }

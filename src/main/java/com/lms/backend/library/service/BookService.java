@@ -1,6 +1,7 @@
 package com.lms.backend.library.service;
 
-import com.lms.backend.library.dto.BookDto;
+import com.lms.backend.library.dto.BookRequestDto;
+import com.lms.backend.library.dto.BookResponseDto;
 import com.lms.backend.library.entity.Book;
 import com.lms.backend.library.mapper.BookMapper;
 import com.lms.backend.library.repository.BookRepository;
@@ -23,10 +24,25 @@ public class BookService {
         return bookRepository.save(book);
     }*/
 
-    public Book createBook(BookDto dto) {
-        // MapStruct otomatik dönüşüm
+    public BookResponseDto createBook(BookRequestDto dto) {
         Book book = bookMapper.toEntity(dto);
-        return bookRepository.save(book);
+        bookRepository.save(book);
+        return bookMapper.toResponseDto(book);
+    }
+
+
+    public BookResponseDto updateBook(Long id, BookRequestDto dto) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        // MapStruct ile entity update
+        book.setTitle(dto.getTitle());
+        book.setAuthor(dto.getAuthor());
+        book.setStatus(dto.getStatus());
+        book.setCategory(dto.getCategory());
+
+        bookRepository.save(book);
+        return bookMapper.toResponseDto(book);
     }
 
 
@@ -34,11 +50,14 @@ public class BookService {
         return bookRepository.findById(id).orElse(null);
     }
 
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public List<BookResponseDto> getAllBooks() {
+        return bookMapper.toResponseDtoList(bookRepository.findAll());
     }
 
     public void deleteBook(Long id) {
-        bookRepository.deleteById(id);
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        bookRepository.delete(book);
     }
 }
