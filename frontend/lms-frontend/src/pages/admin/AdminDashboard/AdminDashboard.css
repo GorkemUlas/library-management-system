@@ -1,0 +1,14 @@
+.admindasboard-container {
+    display:  flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.admindasboard-container main {
+    display: flex;
+    flex-grow: 1;
+}
+
+.admindasboard-container .sidebar {
+    height: 100%;
+}

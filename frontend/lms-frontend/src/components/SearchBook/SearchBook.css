@@ -1,0 +1,50 @@
+.searchbook-container {
+  width: 100%;
+  max-height: 400px; /* scroll alan yüksekliği */
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+  background-color: #f9f9f9;
+}
+
+.book-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.book-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.book-image {
+  width: 50px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.book-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.book-title {
+  font-weight: bold;
+}
+
+.book-author,
+.book-category,
+.book-isbn,
+.book-availability {
+  font-size: 0.85rem;
+  color: #555;
+}

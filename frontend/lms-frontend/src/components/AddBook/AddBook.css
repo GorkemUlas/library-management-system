@@ -1,0 +1,32 @@
+.addbook-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.addbook-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.addbook-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.addbook-form button {
+  padding: 10px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.addbook-form button:hover {
+  background: #125ea8;
+}

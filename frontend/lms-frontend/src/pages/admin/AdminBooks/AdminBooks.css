@@ -1,0 +1,31 @@
+.adminbooks-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: azure;
+    
+}
+.adminbooks-container main {
+    display: flex;
+    flex-grow: 1;
+}
+
+.adminbooks-container .content {
+    width: 80%;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.adminbooks-container .content .options{
+    margin-top: 20px;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: #98c1d983;
+    
+}
+.adminbooks-container .content .options button {
+    font-size:  30px;
+    padding: 20px 40px;
+}
