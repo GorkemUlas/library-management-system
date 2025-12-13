@@ -22,7 +22,7 @@ public class BookRequestDto {
     @NotNull(message = "Total copies cannot be null")
     private Integer totalCopies;
 
-
+    private String imageUrl;
     // Getter & Setter
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
@@ -38,4 +38,7 @@ public class BookRequestDto {
 
     public Integer getTotalCopies() { return totalCopies; }
     public void setTotalCopies(Integer totalCopies) { this.totalCopies = totalCopies; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

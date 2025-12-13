@@ -19,11 +19,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    //silinecek addbook ile birlikte gereksiz overwrite
-    /*@PostMapping
-    public Book createBook(@RequestBody Book book) {
-        return bookService.addBook(book);
-    }*/
+
 
     // Yeni kitap ekleme
     @PostMapping
@@ -66,5 +62,6 @@ public class BookController {
     public List<BookResponseDto> searchByCategory(@RequestParam String category) {
         return bookService.searchByCategory(category);
     }
+
 
 }

@@ -20,6 +20,10 @@ import lombok.Data;
         @NotNull(message = "Available copies cannot be null")
         private Integer availableCopies;
 
+        //resim
+        @Column(name = "image_url")
+        private String imageUrl;
+
 
         //getter setter
 
@@ -77,5 +81,11 @@ import lombok.Data;
             this.availableCopies = availableCopies;
         }
 
+        public String getImageUrl() {
+            return imageUrl;
+        }
+        public void setImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+        }
     }
 
