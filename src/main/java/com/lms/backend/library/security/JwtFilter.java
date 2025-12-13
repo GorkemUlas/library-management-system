@@ -48,13 +48,17 @@ public class JwtFilter extends OncePerRequestFilter {
 
             if (jwtService.isTokenValid(token, userDetails)) {
 
-                String role = jwtService.extractRole(token);
+                // Token'dan ADMIN geliyor
+                String role = jwtService.extractRole(token); // ADMIN
+
+                // Spring Security için ROLE_ADMIN formatı
+                String springRole = "ROLE_" + role;
 
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails,
                                 null,
-                                List.of(new SimpleGrantedAuthority(role))
+                                List.of(new SimpleGrantedAuthority(springRole))
                         );
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);

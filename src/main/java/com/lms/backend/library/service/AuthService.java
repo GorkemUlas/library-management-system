@@ -5,6 +5,7 @@ import com.lms.backend.library.repository.UserRepository;
 import com.lms.backend.library.security.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +16,17 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
 
     public AuthService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        JwtService jwtService,
-                       AuthenticationManager authenticationManager) {
+                       AuthenticationManager authenticationManager, UserDetailsServiceImpl userDetailsServiceImpl) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
     }
 
     // REGISTER
@@ -50,7 +53,7 @@ public class AuthService {
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
-
-        return jwtService.generateToken(user);
+        UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(email);
+        return jwtService.generateToken(userDetails);
     }
 }

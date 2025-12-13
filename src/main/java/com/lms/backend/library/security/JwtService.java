@@ -15,46 +15,43 @@ public class JwtService {
 
     private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    // -----------------------------
     // LOGIN TOKEN (UserDetails ile)
-    // -----------------------------
     public String generateToken(UserDetails userDetails) {
 
-        String role = userDetails.getAuthorities()
+        // UserDetails içindeki authority: ROLE_ADMIN
+        String fullRole = userDetails.getAuthorities()
                 .stream()
                 .findFirst()
-                .map(a -> a.getAuthority())
+                .map(a -> a.getAuthority()) // ROLE_ADMIN
                 .orElse("ROLE_USER");
+
+        // Token'a sadece ADMIN yaz
+        String role = fullRole.replace("ROLE_", "");
 
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
-                .claim("role", role)
+                .claim("role", role) // ADMIN
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(SECRET_KEY)
                 .compact();
     }
 
-
-    // -----------------------------
     // REGISTER TOKEN (User ile)
-    // -----------------------------
     public String generateTokenFromUser(User user) {
 
-        String role = "ROLE_" + user.getRole(); // ADMIN → ROLE_ADMIN
+        // DB: ADMIN → token: ADMIN
+        String role = user.getRole().toUpperCase();
 
         return Jwts.builder()
                 .setSubject(user.getEmail())
-                .claim("role", role)
+                .claim("role", role) // ADMIN
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(SECRET_KEY)
                 .compact();
     }
 
-    // -----------------------------
-    // TOKEN'DAN EMAIL ÇIKARMA
-    // -----------------------------
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
@@ -64,22 +61,17 @@ public class JwtService {
                 .getSubject();
     }
 
-    // -----------------------------
-    // TOKEN'DAN ROL ÇIKARMA
-    // -----------------------------
     public String extractRole(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .get("role", String.class);
+                .get("role", String.class); // ADMIN
     }
 
-    // -----------------------------
-    // TOKEN GEÇERLİ Mİ?
-    // -----------------------------
     public boolean isTokenValid(String token, UserDetails userDetails) {
         return extractUsername(token).equals(userDetails.getUsername());
     }
 }
+

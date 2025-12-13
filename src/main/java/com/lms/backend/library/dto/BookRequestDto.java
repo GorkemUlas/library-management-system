@@ -3,6 +3,7 @@ package com.lms.backend.library.dto;
 // Validation importları
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.ISBN;
 
 public class BookRequestDto {
 /* DTO kullanana entitynin sadece görmesini istediklerimizi göstermek için var controller ve service te parametre olarak entity yerine  */
@@ -22,6 +23,11 @@ public class BookRequestDto {
     @NotNull(message = "Total copies cannot be null")
     private Integer totalCopies;
 
+    private String imageUrl;
+
+    @NotNull(message = "ISBN cannot be null")
+    @ISBN(message = "ISBN is not valid")
+    private String isbn;
 
     // Getter & Setter
     public String getTitle() { return title; }
@@ -38,4 +44,11 @@ public class BookRequestDto {
 
     public Integer getTotalCopies() { return totalCopies; }
     public void setTotalCopies(Integer totalCopies) { this.totalCopies = totalCopies; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+
 }

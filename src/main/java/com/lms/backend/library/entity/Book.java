@@ -2,8 +2,9 @@ package com.lms.backend.library.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.validator.constraints.ISBN;
 
-    @Entity
+@Entity
     @Table(name = "Books", schema="dbo")
     public class Book {
 
@@ -17,8 +18,16 @@ import lombok.Data;
         @NotNull(message = "Total copies cannot be null")
         private Integer totalCopies;
 
+        @ISBN
+        @Column(unique = true, nullable = false)
+        private String isbn;
+
         @NotNull(message = "Available copies cannot be null")
         private Integer availableCopies;
+
+        //resim
+        @Column(name = "image_url")
+        private String imageUrl;
 
 
         //getter setter
@@ -75,6 +84,20 @@ import lombok.Data;
         }
         public void setAvailableCopies(Integer availableCopies) {
             this.availableCopies = availableCopies;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
+        }
+        public void setImageUrl(String imageUrl) {
+            this.imageUrl = imageUrl;
+        }
+
+        public String getIsbn() {
+            return isbn;
+        }
+        public void setIsbn(String isbn) {
+            this.isbn = isbn;
         }
 
     }

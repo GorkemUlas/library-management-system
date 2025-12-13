@@ -9,7 +9,8 @@ public class BookResponseDto {
     private String category;
     private Integer totalCopies;
     private Integer availableCopies;
-
+    private String imageUrl;
+    private String isbn;
     // Getter & Setter
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -31,4 +32,7 @@ public class BookResponseDto {
 
     public Integer getAvailableCopies() { return availableCopies; }
     public void setAvailableCopies(Integer availableCopies) { this.availableCopies = availableCopies; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }
