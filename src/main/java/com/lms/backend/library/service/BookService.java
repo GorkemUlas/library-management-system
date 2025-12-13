@@ -3,6 +3,7 @@ package com.lms.backend.library.service;
 import com.lms.backend.library.dto.BookRequestDto;
 import com.lms.backend.library.dto.BookResponseDto;
 import com.lms.backend.library.entity.Book;
+import com.lms.backend.library.exception.DuplicateIsbnException;
 import com.lms.backend.library.mapper.BookMapper;
 import com.lms.backend.library.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,11 @@ public class BookService {
 
         // stok baslangıcı
         book.setAvailableCopies(dto.getTotalCopies());
+
+        //ISBN kontrol
+        if (bookRepository.existsByIsbn(dto.getIsbn())) {
+            throw new DuplicateIsbnException(dto.getIsbn());
+        }
 
         bookRepository.save(book);
         return bookMapper.toResponseDto(book);
@@ -57,6 +63,16 @@ public class BookService {
 
             book.setTotalCopies(dto.getTotalCopies());
             book.setAvailableCopies(newAvailable);
+        }
+
+        // Eğer ISBN değişiyorsa ve yeni ISBN başka kitapta varsa hata
+        Book existing = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book could not be found"));
+
+        if (!existing.getIsbn().equals(dto.getIsbn()) &&
+                bookRepository.existsByIsbn(dto.getIsbn())) {
+
+            throw new DuplicateIsbnException(dto.getIsbn());
         }
 
         bookRepository.save(book);

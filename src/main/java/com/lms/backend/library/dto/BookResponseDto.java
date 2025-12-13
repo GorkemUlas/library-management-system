@@ -10,6 +10,7 @@ public class BookResponseDto {
     private Integer totalCopies;
     private Integer availableCopies;
     private String imageUrl;
+    private String isbn;
     // Getter & Setter
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
