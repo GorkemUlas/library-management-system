@@ -1,7 +1,10 @@
 package com.lms.backend.library.service;
 
+import com.lms.backend.library.dto.HoldResponseDto;
 import com.lms.backend.library.entity.Book;
 import com.lms.backend.library.entity.User;
+import com.lms.backend.library.entity.Hold;
+
 import com.lms.backend.library.mapper.HoldMapper;
 import com.lms.backend.library.repository.BookRepository;
 import com.lms.backend.library.repository.UserRepository;
@@ -10,44 +13,32 @@ import com.lms.backend.library.entity.Hold;
 import com.lms.backend.library.repository.HoldRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class HoldService {
+
+
     private final HoldRepository holdRepository;
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
     private final HoldMapper holdMapper;
 
-     public HoldService(HoldRepository holdRepository, UserRepository userRepository, BookRepository bookRepository, HoldMapper holdMapper) {
+    public HoldService(HoldRepository holdRepository, UserRepository userRepository,
+                       BookRepository bookRepository, HoldMapper holdMapper) {
         this.holdRepository = holdRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
         this.holdMapper = holdMapper;
     }
 
-    public Hold createHold(HoldDto dto) {
+    public HoldResponseDto createHold(HoldDto dto) {
 
-        Hold hold = holdMapper.toEntity(dto);
+        if (holdRepository.existsByUser_UserIdAndBook_BookIdAndStatus(dto.getUserId(), dto.getBookId(), Hold.HoldStatus.PENDING)) {
+            throw new RuntimeException("You already have a pending hold for this book");
+        }
 
-        hold.setUser(
-                userRepository.findById(dto.getUserId())
-                        .orElseThrow(() -> new RuntimeException("User not found"))
-        );
-
-        hold.setBook(
-                bookRepository.findById(dto.getBookId())
-                        .orElseThrow(() -> new RuntimeException("Book not found"))
-        );
-
-        return holdRepository.save(hold);
-    }
-
-    /*public Hold addHold(Hold hold) {
-        return holdRepository.save(hold);
-    }*/
-
-    /*public Hold createHold(HoldDto dto) {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -57,19 +48,10 @@ public class HoldService {
         Hold hold = new Hold();
         hold.setUser(user);
         hold.setBook(book);
+        hold.setHoldDate(LocalDate.now());
+        hold.setStatus(Hold.HoldStatus.PENDING);
 
-        return holdRepository.save(hold);
-    }*/
-
-    public Hold getHold(Long id) {
-        return holdRepository.findById(id).orElse(null);
-    }
-
-    public List<Hold> getAllHolds() {
-        return holdRepository.findAll();
-    }
-
-    public void deleteHold(Long id) {
-        holdRepository.deleteById(id);
+        Hold saved = holdRepository.save(hold);
+        return holdMapper.toResponseDto(saved);
     }
 }

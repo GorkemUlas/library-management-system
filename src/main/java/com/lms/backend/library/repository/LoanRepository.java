@@ -6,5 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface LoanRepository extends JpaRepository<Loan, Long> {
-    List<Loan> findByUser_UserId(Long userId);
+
+    boolean existsByUser_UserIdAndBook_BookIdAndReturnDateIsNull(Long userId, Long bookId);
+
+    List<Loan> findByUser_UserIdAndReturnDateIsNull(Long userId);
 }
+
+

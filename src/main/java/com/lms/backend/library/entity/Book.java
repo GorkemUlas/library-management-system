@@ -1,5 +1,6 @@
 package com.lms.backend.library.entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
     @Entity
@@ -13,9 +14,14 @@ import lombok.Data;
         private String author;
         private String status; // Available, Borrowed
         private String category;
+        @NotNull(message = "Total copies cannot be null")
+        private Integer totalCopies;
+
+        @NotNull(message = "Available copies cannot be null")
+        private Integer availableCopies;
 
 
-            //getter setter
+        //getter setter
 
 
         public Long getBookId() {
@@ -57,5 +63,19 @@ import lombok.Data;
         public void setCategory(String category) {
             this.category = category;
         }
+
+        public Integer getTotalCopies() {
+            return totalCopies;
+        }
+        public void setTotalCopies(Integer totalCopies) {
+            this.totalCopies = totalCopies;
+        }
+        public Integer getAvailableCopies() {
+            return availableCopies;
+        }
+        public void setAvailableCopies(Integer availableCopies) {
+            this.availableCopies = availableCopies;
+        }
+
     }
 

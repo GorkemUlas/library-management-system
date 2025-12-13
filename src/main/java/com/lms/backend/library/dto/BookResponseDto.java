@@ -7,6 +7,8 @@ public class BookResponseDto {
     private String author;
     private String status;
     private String category;
+    private Integer totalCopies;
+    private Integer availableCopies;
 
     // Getter & Setter
     public Long getId() { return id; }
@@ -23,4 +25,10 @@ public class BookResponseDto {
 
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
+
+    public Integer getTotalCopies() { return totalCopies; }
+    public void setTotalCopies(Integer totalCopies) { this.totalCopies = totalCopies; }
+
+    public Integer getAvailableCopies() { return availableCopies; }
+    public void setAvailableCopies(Integer availableCopies) { this.availableCopies = availableCopies; }
 }

@@ -7,7 +7,7 @@ import java.time.LocalDate;
 public class Hold {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long hold_id;
+    private Long holdId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -17,17 +17,26 @@ public class Hold {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    private LocalDate request_date;
-    private String status; // Pending, Approved, Cancelled
+    private LocalDate holdDate;
+
+    public enum HoldStatus {
+        PENDING,
+        COMPLETED,
+        CANCELLED
+    }
+
+
+    @Enumerated(EnumType.STRING)
+    private HoldStatus status; // Pending, Approved, Cancelled
 
     // Getter & Setter
 
-    public Long getHold_id() {
-        return hold_id;
-    }
 
-    public void setHold_id(Long hold_id) {
-        this.hold_id = hold_id;
+    public Long getHoldId() {
+        return holdId;
+    }
+    public void setHoldId(Long holdId) {
+        this.holdId = holdId;
     }
 
     public User getUser() {
@@ -46,19 +55,19 @@ public class Hold {
         this.book = book;
     }
 
-    public LocalDate getRequest_date() {
-        return request_date;
+
+    public LocalDate getHoldDate() {
+        return holdDate;
+    }
+    public void setHoldDate(LocalDate holdDate) {
+        this.holdDate = holdDate;
     }
 
-    public void setRequest_date(LocalDate request_date) {
-        this.request_date = request_date;
-    }
-
-    public String getStatus() {
+    public HoldStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(HoldStatus status) {
         this.status = status;
     }
 }

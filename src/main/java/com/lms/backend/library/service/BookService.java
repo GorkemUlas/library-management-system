@@ -26,6 +26,10 @@ public class BookService {
 
     public BookResponseDto createBook(BookRequestDto dto) {
         Book book = bookMapper.toEntity(dto);
+
+        // stok baslangıcı
+        book.setAvailableCopies(dto.getTotalCopies());
+
         bookRepository.save(book);
         return bookMapper.toResponseDto(book);
     }
@@ -41,6 +45,20 @@ public class BookService {
         book.setStatus(dto.getStatus());
         book.setCategory(dto.getCategory());
 
+        // stok mantığı
+        if (!book.getTotalCopies().equals(dto.getTotalCopies())) {
+
+            int difference = dto.getTotalCopies() - book.getTotalCopies();
+            int newAvailable = book.getAvailableCopies() + difference;
+
+            if (newAvailable < 0) {
+                throw new RuntimeException("Cannot reduce total copies below borrowed amount");
+            }
+
+            book.setTotalCopies(dto.getTotalCopies());
+            book.setAvailableCopies(newAvailable);
+        }
+
         bookRepository.save(book);
         return bookMapper.toResponseDto(book);
     }
@@ -54,10 +72,27 @@ public class BookService {
         return bookMapper.toResponseDtoList(bookRepository.findAll());
     }
 
+
+
     public void deleteBook(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
 
         bookRepository.delete(book);
     }
+    public List<BookResponseDto> searchByTitle(String title) {
+        List<Book> books = bookRepository.findByTitleContainingIgnoreCase(title);
+        return bookMapper.toResponseDtoList(books);
+    }
+
+    public List<BookResponseDto> searchByAuthor(String author) {
+        List<Book> books = bookRepository.findByAuthorContainingIgnoreCase(author);
+        return bookMapper.toResponseDtoList(books);
+    }
+
+    public List<BookResponseDto> searchByCategory(String category) {
+        List<Book> books = bookRepository.findByCategoryContainingIgnoreCase(category);
+        return bookMapper.toResponseDtoList(books);
+    }
+
 }

@@ -51,4 +51,20 @@ public class BookController {
     public Book getBook(@PathVariable Long id) {
         return bookService.getBook(id);
     }
+
+    @GetMapping("/search/title")
+    public List<BookResponseDto> searchByTitle(@RequestParam String title) {
+        return bookService.searchByTitle(title);
+    }
+
+    @GetMapping("/search/author")
+    public List<BookResponseDto> searchByAuthor(@RequestParam String author) {
+        return bookService.searchByAuthor(author);
+    }
+
+    @GetMapping("/search/category")
+    public List<BookResponseDto> searchByCategory(@RequestParam String category) {
+        return bookService.searchByCategory(category);
+    }
+
 }

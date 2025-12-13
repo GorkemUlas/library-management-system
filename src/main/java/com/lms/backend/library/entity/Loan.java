@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class Loan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long loan_id;
+    private Long loanId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -18,34 +18,53 @@ public class Loan {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    private LocalDate issue_date;
-    private LocalDate return_date;
-    private Double fine_amount;
+    private LocalDate issueDate;
+    private LocalDate dueDate;
+    private LocalDate returnDate;
+
+    private Double fineAmount;
 
     // Getter & Setter
 
-    public Double getFine_amount() {
-        return fine_amount;
+
+    public Long getLoanId() {
+        return loanId;
     }
 
-    public void setFine_amount(Double fine_amount) {
-        this.fine_amount = fine_amount;
+    public void setLoanId(Long loanId) {
+        this.loanId = loanId;
     }
 
-    public LocalDate getReturn_date() {
-        return return_date;
+    public Double getFineAmount() {
+        return fineAmount;
     }
 
-    public void setReturn_date(LocalDate return_date) {
-        this.return_date = return_date;
+    public void setFineAmount(Double fineAmount) {
+        this.fineAmount = fineAmount;
     }
 
-    public LocalDate getIssue_date() {
-        return issue_date;
+    public LocalDate getReturnDate() {
+        return returnDate;
     }
 
-    public void setIssue_date(LocalDate issue_date) {
-        this.issue_date = issue_date;
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public LocalDate getIssueDate() {
+        return issueDate;
+    }
+
+    public void setIssueDate(LocalDate issueDate) {
+        this.issueDate = issueDate;
     }
 
     public Book getBook() {
@@ -64,11 +83,5 @@ public class Loan {
         this.user = user;
     }
 
-    public Long getLoan_id() {
-        return loan_id;
-    }
 
-    public void setLoan_id(Long loan_id) {
-        this.loan_id = loan_id;
-    }
 }

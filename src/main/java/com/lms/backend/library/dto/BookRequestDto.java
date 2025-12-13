@@ -2,6 +2,7 @@ package com.lms.backend.library.dto;
 
 // Validation importları
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class BookRequestDto {
 /* DTO kullanana entitynin sadece görmesini istediklerimizi göstermek için var controller ve service te parametre olarak entity yerine  */
@@ -18,6 +19,10 @@ public class BookRequestDto {
     @NotBlank(message = "Category cannot be empty")
     private String category;
 
+    @NotNull(message = "Total copies cannot be null")
+    private Integer totalCopies;
+
+
     // Getter & Setter
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
@@ -30,4 +35,7 @@ public class BookRequestDto {
 
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
+
+    public Integer getTotalCopies() { return totalCopies; }
+    public void setTotalCopies(Integer totalCopies) { this.totalCopies = totalCopies; }
 }
