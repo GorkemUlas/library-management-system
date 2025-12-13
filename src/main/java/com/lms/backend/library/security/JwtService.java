@@ -25,7 +25,7 @@ public class JwtService {
                 .map(a -> a.getAuthority()) // ROLE_ADMIN
                 .orElse("ROLE_USER");
 
-        // Token'a sadece ADMIN yazıyoruz
+        // Token'a sadece ADMIN yaz
         String role = fullRole.replace("ROLE_", "");
 
         return Jwts.builder()
