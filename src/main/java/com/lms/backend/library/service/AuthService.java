@@ -1,11 +1,14 @@
 package com.lms.backend.library.service;
 
 import com.lms.backend.library.entity.User;
+import com.lms.backend.library.exception.InvalidCredentialsException;
 import com.lms.backend.library.repository.UserRepository;
 import com.lms.backend.library.security.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -47,10 +50,13 @@ public class AuthService {
     // LOGIN
     public String login(String email, String password) {
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, password)
-        );
-
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, password)
+            );
+        } catch (BadCredentialsException | UsernameNotFoundException e) {
+            throw new InvalidCredentialsException("Email veya şifre hatalı");
+        }
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı"));
         UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(email);
