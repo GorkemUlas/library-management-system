@@ -1,6 +1,8 @@
 package com.lms.backend.library.exception;
 
 
+import com.lms.backend.library.service.UserService;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -30,6 +32,34 @@ public class GlobalExceptionHandler {
         error.put("error", ex.getMessage());
         return ResponseEntity.badRequest().body(error);
     }
+    @ExceptionHandler(UserService.EmailAlreadyUsedException.class)
+    public ResponseEntity<Map<String,String>> handleEmailConflict(
+            UserService.EmailAlreadyUsedException ex) {
 
-}
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of(
+                        "error", "EMAIL_ALREADY_USED",
+                        "message", ex.getMessage()
+                ));}
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+        public ResponseEntity<Map<String, String>> handleDataIntegrity (
+                DataIntegrityViolationException ex){
+
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of(
+                            "error", "DATA_INTEGRITY_VIOLATION",
+                            "message", "Database constraint violation"
+                    ));
+
+
+        }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleRuntime (RuntimeException ex){
+        return ResponseEntity
+                .badRequest()
+                .body(ex.getMessage());
+    }
+
+
+    }
