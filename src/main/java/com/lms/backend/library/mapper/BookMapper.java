@@ -17,18 +17,36 @@ import java.util.List;
 public interface BookMapper {
 
 
-        @Mapping(target = "bookId", ignore = true) // create için id DB tarafından üretilir
-        @Mapping(target = "availableCopies", ignore = true) // service setlesin
-        @Mapping(target = "status", expression = "java(book.getStatus() == null ? null : book.getStatus().name())", ignore = true)
-        @Mapping(target = "isbn", source = "isbn")
-        @Mapping(target = "title", source = "title")
-        @Mapping(target = "author", source = "author")
-        @Mapping(target = "totalCopies", source = "totalCopies")
-        @Mapping(target = "imageUrl", source = "imageUrl")
-        Book toEntity(BookRequestDto dto);
 
-        BookResponseDto toResponseDto(Book book);
+    @Mapping(target = "bookId", ignore = true)
+    @Mapping(target = "availableCopies", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    Book toEntity(BookRequestDto dto);
 
-        List<BookResponseDto> toResponseDtoList(List<Book> books);
-    }
+    BookResponseDto toResponseDto(Book book);
+
+    List<BookResponseDto> toResponseDtoList(List<Book> books);
+
+    default String map(Book.BookStatus status) {
+        return status == null ? null : status.name();
+
+
+
+
+//        @Mapping(target = "bookId", ignore = true) // create için id DB tarafından üretilir
+//        @Mapping(target = "availableCopies", ignore = true) // service setlesin
+//        @Mapping(target = "status", expression = "java(book.getStatus() == null ? null : book.getStatus().name())", ignore = true)
+//        @Mapping(target = "isbn", source = "isbn")
+//        @Mapping(target = "title", source = "title")
+//        @Mapping(target = "author", source = "author")
+//        @Mapping(target = "totalCopies", source = "totalCopies")
+//        @Mapping(target = "imageUrl", source = "imageUrl")
+//        Book toEntity(BookRequestDto dto);
+//        BookResponseDto toResponseDto(Book book);
+//        List<BookResponseDto> toResponseDtoList(List<Book> books);
+//
+
+
+
+    }}
 
