@@ -2,7 +2,7 @@ package com.lms.backend.library.dto;
 
 public class BookResponseDto {
 
-    private Long id;
+    private Long bookId;
     private String title;
     private String author;
     private String status;
@@ -12,8 +12,9 @@ public class BookResponseDto {
     private String imageUrl;
     private String isbn;
     // Getter & Setter
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+
+    public Long getBookId() { return bookId; }
+    public void setBookId(Long bookId) { this.bookId = bookId; }
 
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
@@ -35,4 +36,6 @@ public class BookResponseDto {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
 }

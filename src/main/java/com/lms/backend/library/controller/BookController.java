@@ -4,6 +4,7 @@ import com.lms.backend.library.dto.BookRequestDto;
 import com.lms.backend.library.dto.BookResponseDto;
 import com.lms.backend.library.entity.Book;
 import com.lms.backend.library.service.BookService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,9 @@ public class BookController {
 
     // Yeni kitap ekleme
     @PostMapping
+
     public BookResponseDto createBook(@RequestBody @Valid BookRequestDto dto) {
+        System.out.println("Incoming ISBN = " + dto.getIsbn());
         return bookService.createBook(dto);
     }
 
@@ -47,6 +50,20 @@ public class BookController {
     public Book getBook(@PathVariable Long id) {
         return bookService.getBook(id);
     }
+
+
+    @PostMapping("/{id}/borrow")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void borrow(@PathVariable Long id) {
+        bookService.borrowBook(id);
+    }
+
+    @PostMapping("/{id}/return")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void returnBook(@PathVariable Long id) {
+        bookService.returnBook(id);
+    }
+
 
     @GetMapping("/search/title")
     public List<BookResponseDto> searchByTitle(@RequestParam String title) {

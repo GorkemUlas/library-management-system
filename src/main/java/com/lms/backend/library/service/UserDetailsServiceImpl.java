@@ -20,19 +20,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        User user = userRepository.findByEmail(email)
-//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-//
-//        String role = user.getRole().trim().toUpperCase(); // normalize
-//
-//        return org.springframework.security.core.userdetails.User.builder()
-//                .username(user.getEmail())
-//                .password(user.getPassword())
-//                .roles(role) // Spring → ROLE_ADMIN yapar
-//                .build();
-//    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
@@ -40,13 +28,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         System.out.println("USER ROLE FROM DB = " + user.getRole()); // ✅ TEST
 
-        String role = user.getRole().trim().toUpperCase();
+        String rawRole = user.getRole().trim().toUpperCase();
+        String normalizedRole = rawRole.replace("ROLE_", ""); // -> "ADMIN"
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
                 .password(user.getPassword())
-                .roles(role)
+                .roles(normalizedRole) // Spring otomatik ROLE_ prefix ekler -> ROLE_ADMIN
                 .build();
-    }
 
-}
+    }
+    }

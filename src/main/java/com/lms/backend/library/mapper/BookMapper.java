@@ -4,6 +4,7 @@ import com.lms.backend.library.dto.BookRequestDto;
 import com.lms.backend.library.dto.BookResponseDto;
 import com.lms.backend.library.entity.Book;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
@@ -15,9 +16,19 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface BookMapper {
 
-    Book toEntity(BookRequestDto dto);
 
-    BookResponseDto toResponseDto(Book book);
+        @Mapping(target = "bookId", ignore = true) // create için id DB tarafından üretilir
+        @Mapping(target = "availableCopies", ignore = true) // service setlesin
+        @Mapping(target = "status", expression = "java(book.getStatus() == null ? null : book.getStatus().name())", ignore = true)
+        @Mapping(target = "isbn", source = "isbn")
+        @Mapping(target = "title", source = "title")
+        @Mapping(target = "author", source = "author")
+        @Mapping(target = "totalCopies", source = "totalCopies")
+        @Mapping(target = "imageUrl", source = "imageUrl")
+        Book toEntity(BookRequestDto dto);
 
-    List<BookResponseDto> toResponseDtoList(List<Book> books);
-}
+        BookResponseDto toResponseDto(Book book);
+
+        List<BookResponseDto> toResponseDtoList(List<Book> books);
+    }
+

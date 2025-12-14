@@ -14,19 +14,15 @@ public class BookRequestDto {
     @NotBlank(message = "Author cannot be empty")
     private String author;
 
-    @NotBlank(message = "Status cannot be empty")
-    private String status;
-
     @NotBlank(message = "Category cannot be empty")
     private String category;
 
     @NotNull(message = "Total copies cannot be null")
     private Integer totalCopies;
 
+
     private String imageUrl;
 
-    @NotNull(message = "ISBN cannot be null")
-    @ISBN(message = "ISBN is not valid")
     private String isbn;
 
     // Getter & Setter
@@ -36,8 +32,6 @@ public class BookRequestDto {
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
 
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
@@ -51,4 +45,5 @@ public class BookRequestDto {
     public String getIsbn() { return isbn; }
     public void setIsbn(String isbn) { this.isbn = isbn; }
 
-}
+
+    }
