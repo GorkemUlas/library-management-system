@@ -174,5 +174,8 @@ public class LoanService {
         List<Loan> loans = loanRepository.findByUser_UserIdAndReturnDateIsNull(userId);
         return loanMapper.toResponseDtoList(loans);
     }
+
+
+
 }
 

@@ -41,8 +41,7 @@ public class JwtService {
     public String generateTokenFromUser(User user) {
 
         // DB: ADMIN → token: ADMIN
-        String role = user.getRole().toUpperCase();
-
+        String role = user.getRole().toUpperCase().replace("ROLE_", ""); // -> "ADMIN"
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("role", role) // ADMIN

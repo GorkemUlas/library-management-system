@@ -40,13 +40,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         System.out.println("USER ROLE FROM DB = " + user.getRole()); // ✅ TEST
 
-        String role = user.getRole().trim().toUpperCase();
+        String rawRole = user.getRole().trim().toUpperCase();
+        String normalizedRole = rawRole.replace("ROLE_", ""); // -> "ADMIN"
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
                 .password(user.getPassword())
-                .roles(role)
+                .roles(normalizedRole) // Spring otomatik ROLE_ prefix ekler -> ROLE_ADMIN
                 .build();
-    }
 
-}
+    }
+    }

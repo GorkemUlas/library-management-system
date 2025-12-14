@@ -6,6 +6,8 @@ import com.lms.backend.library.entity.Book;
 import com.lms.backend.library.exception.DuplicateIsbnException;
 import com.lms.backend.library.mapper.BookMapper;
 import com.lms.backend.library.repository.BookRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,15 +28,27 @@ public class BookService {
     }*/
 
     public BookResponseDto createBook(BookRequestDto dto) {
+
+        // DTO -> entity (isbn, title, author, totalCopies, imageUrl, category)
         Book book = bookMapper.toEntity(dto);
 
-        // stok baslangıcı
-        book.setAvailableCopies(dto.getTotalCopies());
+        // Business rules
+        if (book.getTotalCopies() == null || book.getTotalCopies() < 0) {
+            throw new IllegalArgumentException("totalCopies must be provided and >= 0");
+        }
+
+        // initial availableCopies = totalCopies
+        book.setAvailableCopies(book.getTotalCopies());
+
+        // status based on availableCopies
+        book.setStatus( book.getAvailableCopies() !=null && book.getAvailableCopies()  > 0 ? Book.BookStatus.AVAILABLE : Book.BookStatus.NOT_AVAILABLE);
+        // Eğer enum kullanıyorsan: book.setStatus(BookStatus.AVAILABLE);
 
         //ISBN kontrol
         if (bookRepository.existsByIsbn(dto.getIsbn())) {
             throw new DuplicateIsbnException(dto.getIsbn());
         }
+        System.out.println("Mapped ISBN = " + book.getIsbn()); // null mu?
 
         bookRepository.save(book);
         return bookMapper.toResponseDto(book);
@@ -48,7 +62,6 @@ public class BookService {
         // MapStruct ile entity update
         book.setTitle(dto.getTitle());
         book.setAuthor(dto.getAuthor());
-        book.setStatus(dto.getStatus());
         book.setCategory(dto.getCategory());
 
         // stok mantığı
@@ -113,4 +126,38 @@ public class BookService {
 
 
 
+    @Transactional
+    public void borrowBook(Long id) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found: " + id));
+
+        Integer available = book.getAvailableCopies();
+        if (available == null || available <= 0) {
+            throw new IllegalStateException("No copies available");
+        }
+
+        book.setAvailableCopies(available - 1);
+
+        // Enum kullanıyorsan BookStatus.AVAILABLE / NOT_AVAILABLE
+        book.setStatus(book.getAvailableCopies() > 0 ? Book.BookStatus.AVAILABLE : Book.BookStatus.NOT_AVAILABLE);
+
+        bookRepository.save(book);
+    }
+
+    @Transactional
+    public void returnBook(Long id) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found: " + id));
+
+        int available = (book.getAvailableCopies() == null) ? 0 : book.getAvailableCopies();
+        if (available < book.getTotalCopies()) {
+            book.setAvailableCopies(available + 1);
+        }
+
+        book.setStatus(book.getAvailableCopies() > 0 ? Book.BookStatus.AVAILABLE : Book.BookStatus.NOT_AVAILABLE);
+        bookRepository.save(book);
+    }
 }
+
+
+
