@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./AddBook.css";
 import { Message } from "../Message/Message";
 
-export function AddBook() {
+export function AddBook({ triggerMessage }) {
     const [message, setMessage] = useState(null)
 
     const [form, setForm] = useState({
@@ -28,7 +28,7 @@ export function AddBook() {
         // şimdilik sadece log
         console.log(form);
 
-        setMessage({ text: "Book added successfully!", type: "success" });
+        triggerMessage({ text: "Book added successfully!", type: "success" })
 
         // ileride:
         // axios.post("/admin/books", form)
@@ -36,14 +36,6 @@ export function AddBook() {
 
     return (
         <div className="addbook-container">
-            {message && (
-                <Message
-                    text={message.text}
-                    type={message.type}
-                    onClose={() => setMessage(null)}
-                    duration={2000}
-                />
-            )}
             <h2>Add Book</h2>
 
             <form className="addbook-form" onSubmit={handleSubmit}>

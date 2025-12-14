@@ -5,7 +5,7 @@ import { useState } from "react"
 import { AddBook } from "../../../components/AddBook/AddBook"
 import { SearchBook } from "../../../components/SearchBook/SearchBook"
 
-export function AdminBooks() {
+export function AdminBooks({ triggerMessage }) {
 
     const [forms, setForms] = useState(0)
     const [message, setMessage] = useState(null)
@@ -15,7 +15,7 @@ export function AdminBooks() {
             case 1:
                 return <SearchBook />;
             case 2:
-                return <AddBook />;
+                return <AddBook triggerMessage={triggerMessage}/>;
             default:
                 return null;
         }
