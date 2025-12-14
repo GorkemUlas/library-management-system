@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @Configuration
 public class SecurityConfig {
 
@@ -40,26 +39,31 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+        // http.csrf(csrf -> csrf.disable())
+        // .authorizeHttpRequests(auth -> auth
+        // .requestMatchers("/auth/**").permitAll() // register + login serbest
+        // .requestMatchers("/admin/**").hasRole("ADMIN")
+        // .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+        // .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
+        // .requestMatchers(HttpMethod.POST, "/books/**").hasRole("ADMIN")
+        // .requestMatchers(HttpMethod.PUT, "/books/**").hasRole("ADMIN")
+        // .requestMatchers(HttpMethod.DELETE, "/books/**").hasRole("ADMIN")
+
+        // .anyRequest().authenticated()
+        // )
+        // .sessionManagement(session -> session
+        // .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        // );
+
+        // http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        // return http.build();
+
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()   //  register + login serbest
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/books/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/books/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/books/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/books/**").hasRole("ADMIN")
-
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
-
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                        .anyRequest().permitAll());
 
         return http.build();
     }
-
 
 }
