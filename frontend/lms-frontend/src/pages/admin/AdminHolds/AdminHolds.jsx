@@ -1,36 +1,33 @@
-import "./UserBooks.css"
+import "./AdminHolds.css"
 import { Navbar } from "../../../components/Navbar/Navbar"
 import { Sidebar } from "../../../components/Sidebar/Sidebar"
 import { useState } from "react"
-import { AddBook } from "../../../components/AddBook/AddBook"
-import { SearchBook } from "../../../components/SearchBook/SearchBook"
-import { EditBook } from "../../../components/EditBook/EditBook"
-import { BorrowBook } from "../../../components/BorrowBook/BorrowBook"
+import { SearchHolds } from "../../../components/SearchHolds/SearchHolds"
+import { LoanBook } from "../../../components/LoanBook/LoanBook"
 
-export function UserBooks({ triggerMessage }) {
-
+export function AdminHolds({ triggerMessage }) {
     const [form, setForm] = useState(1)
-    const [book, setBook] = useState(null)
+    const [hold, setHold] = useState(null)
 
     function renderForm(form) {
         switch (form) {
             case 1:
-                return <SearchBook setForm={setForm} setBook={setBook}/>;
-            case 3:
-                return <BorrowBook book={book} triggerMessage={triggerMessage}/>;
+                return <SearchHolds setForm={setForm} setHold={setHold} />;
+            case 2:
+                return <LoanBook hold={hold} triggerMessage={triggerMessage} />;
+            // case 3:
+            //     return <EditBook book={book} triggerMessage={triggerMessage} />
             default:
                 return null;
         }
     }
-
-
     return <div>
-        <div className="userbooks-container">
+        <div className="adminholds-container">
             <Navbar />
             <main>
                 <Sidebar />
                 <div className="content">
-                    <h2 className="page-tag">Books</h2>
+                    <h2 className="page-tag">Holds</h2>
                     <div className="options">
                         <button className="opt" onClick={() => setForm(1)}>🔍</button>
                     </div>

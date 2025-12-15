@@ -11,6 +11,7 @@ import { UserDashboard } from "./pages/user/UserDashboard/UserDashboard";
 import { ProtectedRoute } from "./auth/ProtectedRoute";
 import { Unauthorized } from "./pages/Unauthorized/Unauthorized";
 import { UserBooks } from "./pages/user/UserBooks/UserBooks";
+import { AdminHolds } from "./pages/admin/AdminHolds/AdminHolds";
 
 function App() {
 
@@ -45,10 +46,11 @@ function App() {
                     {/* Admin */}
                     <Route path="/admin/dashboard" element={<ProtectedRoute roleParam="ADMIN"><AdminDashboard /></ProtectedRoute>} />
                     <Route path="/admin/books" element={<ProtectedRoute roleParam="ADMIN"><AdminBooks triggerMessage={triggerMessage} /></ProtectedRoute>} />
+                    <Route path="/admin/holds" element={<ProtectedRoute roleParam="ADMIN"><AdminHolds triggerMessage={triggerMessage} /></ProtectedRoute>} />
 
                     {/* User */}
                     <Route path="/user/dashboard" element={<ProtectedRoute roleParam="USER"><UserDashboard /></ProtectedRoute>} />
-                    <Route path="/user/books" element={<ProtectedRoute roleParam="USER"><UserBooks /></ProtectedRoute>} />
+                    <Route path="/user/books" element={<ProtectedRoute roleParam="USER"><UserBooks triggerMessage={triggerMessage}/></ProtectedRoute>} />
 
                     <Route path="/unauthorized" element={<Unauthorized />} />
 

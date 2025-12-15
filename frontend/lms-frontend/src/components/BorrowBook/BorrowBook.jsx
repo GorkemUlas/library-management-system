@@ -1,13 +1,27 @@
+import axios from "axios";
 import "./BorrowBook.css";
+import { useNavigate } from "react-router";
 
-export function BorrowBook({ book }) {
+export function BorrowBook({ book, triggerMessage }) {
+    const navigate = useNavigate()
+    const user = JSON.parse(localStorage.getItem("user"))
     if (!book) return null;
 
     const isAvailable = book.availableCopies > 0;
     const holdRequestHandler = () => {
-        
-        
-        
+        const url = "http://localhost:8080/holds"
+        console.log(user.userId, book.bookId);
+
+        axios.post(url, {userId: user.userId, bookId: book.bookId})
+        .then(res => {
+            console.log(res);
+            triggerMessage({text: "Requested Successfully!", type:"success"})
+            navigate("/")
+        })
+        .catch((err) => {
+            console.log(err);
+            triggerMessage({text: err.response.data, type:"error"})
+        })
     }
 
     return (

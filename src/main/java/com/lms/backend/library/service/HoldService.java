@@ -19,14 +19,13 @@ import java.util.List;
 @Service
 public class HoldService {
 
-
     private final HoldRepository holdRepository;
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
     private final HoldMapper holdMapper;
 
     public HoldService(HoldRepository holdRepository, UserRepository userRepository,
-                       BookRepository bookRepository, HoldMapper holdMapper) {
+            BookRepository bookRepository, HoldMapper holdMapper) {
         this.holdRepository = holdRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
@@ -35,7 +34,8 @@ public class HoldService {
 
     public HoldResponseDto createHold(HoldDto dto) {
 
-        if (holdRepository.existsByUser_UserIdAndBook_BookIdAndStatus(dto.getUserId(), dto.getBookId(), Hold.HoldStatus.PENDING)) {
+        if (holdRepository.existsByUser_UserIdAndBook_BookIdAndStatus(dto.getUserId(), dto.getBookId(),
+                Hold.HoldStatus.PENDING)) {
             throw new RuntimeException("You already have a pending hold for this book");
         }
 
@@ -54,4 +54,9 @@ public class HoldService {
         Hold saved = holdRepository.save(hold);
         return holdMapper.toResponseDto(saved);
     }
+
+    public List<HoldResponseDto> getAllHolds() {
+        return holdMapper.toResponseDtoList(holdRepository.findAll());
+    }
+
 }
