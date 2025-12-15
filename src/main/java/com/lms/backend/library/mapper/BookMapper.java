@@ -20,22 +20,24 @@ public interface BookMapper {
 
     @Mapping(target = "bookId", ignore = true)
     @Mapping(target = "availableCopies", ignore = true)
-    @Mapping(target = "status", ignore = true)
+//    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "status", expression = "java(book.getStatus() == null ? null : book.getStatus().name())", ignore = true)
+
     Book toEntity(BookRequestDto dto);
 
     BookResponseDto toResponseDto(Book book);
 
     List<BookResponseDto> toResponseDtoList(List<Book> books);
 
-    default String map(Book.BookStatus status) {
-        return status == null ? null : status.name();
+//    default String map(Book.BookStatus status) {
+//        return status == null ? null : status.name();
 
 
 
 
 //        @Mapping(target = "bookId", ignore = true) // create için id DB tarafından üretilir
 //        @Mapping(target = "availableCopies", ignore = true) // service setlesin
-//        @Mapping(target = "status", expression = "java(book.getStatus() == null ? null : book.getStatus().name())", ignore = true)
+//          @Mapping(target = "status", expression = "java(book.getStatus() == null ? null : book.getStatus().name())", ignore = true)
 //        @Mapping(target = "isbn", source = "isbn")
 //        @Mapping(target = "title", source = "title")
 //        @Mapping(target = "author", source = "author")
@@ -48,5 +50,5 @@ public interface BookMapper {
 
 
 
-    }}
+    }
 
