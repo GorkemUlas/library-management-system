@@ -24,6 +24,14 @@ public class Loan {
 
     private Double fineAmount;
 
+    public enum LoanStatus {
+        ACTIVE,
+        RETURNED,
+        OVERDUE
+    }
+    @Enumerated(EnumType.STRING)
+    private LoanStatus status;
+
     // Getter & Setter
 
 
@@ -83,5 +91,11 @@ public class Loan {
         this.user = user;
     }
 
+    public LoanStatus getStatus() {
+        return status;
+    }
 
+    public void setStatus(LoanStatus status) {
+        this.status = status;
+    }
 }

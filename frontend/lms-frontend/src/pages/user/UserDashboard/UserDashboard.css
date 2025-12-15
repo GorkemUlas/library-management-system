@@ -2,71 +2,106 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: rgb(188, 215, 226);
+    background: #f5f7fa;
+    font-family: "Inter", sans-serif;
 }
 
-.userdashboard-container .content .page-tag{
-    margin-left: 20px;
-    margin-top: 20px;
-}
-
-.userdashboard-container main {
+main {
     display: flex;
-    flex-grow: 1;
+    flex: 1;
 }
 
-.userdashboard-container .content {
-    width: 100%;
-    height: 100%;
+.content {
+    flex: 1;
+    padding: 30px 40px;
+    overflow-y: auto;
 }
 
-.userdashboard-container .forms {
-    height: 575px;
-    padding: auto;
+.page-tag {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #2c3e50;
 }
 
-.userdashboard-container .boxes {
-    margin: 0 10px;
+/* ✅ SUMMARY SECTION */
+.summary-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-bottom: 40px;
+}
+
+.summary-section h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #34495e;
+}
+
+.summary-section p {
+    font-size: 16px;
+    margin: 4px 0;
+    color: #555;
+}
+
+/* ✅ SECTION TITLES */
+section h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+/* ✅ CARD LIST */
+.card-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
-    margin-top: 20px;
 }
 
-.userdashboard-container .stat-box {
-    padding: 20px;
-    border-radius: 14px;
-    color: #fff;
-    min-height: 110px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+/* ✅ CARD STYLE */
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
 }
 
-.userdashboard-container .stat-title {
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.card h4 {
+    font-size: 17px;
+    margin-bottom: 6px;
+    color: #34495e;
+}
+
+.card p {
     font-size: 14px;
-    opacity: 0.9;
+    color: #666;
 }
 
-.userdashboard-container .stat-value {
-    font-size: 32px;
-    font-weight: bold;
+/* ✅ LOADING & ERROR */
+.loading,
+.error {
+    font-size: 20px;
+    text-align: center;
+    margin-top: 50px;
+    color: #555;
 }
 
-
-.userdashboard-container .stat-box.users {
-    background: linear-gradient(135deg, #4e73df, #224abe);
-}
-
-.userdashboard-container .stat-box.books {
-    background: linear-gradient(135deg, #1cc88a, #13855c);
-}
-
-.userdashboard-container .stat-box.loans {
-    background: linear-gradient(135deg, #36b9cc, #258391);
-}
-
-.userdashboard-container .stat-box.holds {
-    background: linear-gradient(135deg, #f6c23e, #dda20a);
+.error {
+    color: #e74c3c;
 }

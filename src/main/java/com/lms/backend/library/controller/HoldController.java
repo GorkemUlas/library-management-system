@@ -23,4 +23,16 @@ public class HoldController {
     public HoldResponseDto createHold(@RequestBody HoldDto dto) {
         return holdService.createHold(dto);
     }
+
+    @GetMapping
+    public List<HoldResponseDto> getAllHolds() {
+        return holdService.getAllHolds();
+    }
+
+    @GetMapping("/user")
+    public List<HoldResponseDto> getHoldsByUser(@RequestParam Long userId) {
+        return holdService.getHoldsByUser(userId);
+    }
+
+
 }

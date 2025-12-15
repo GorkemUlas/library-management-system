@@ -54,4 +54,16 @@ public class HoldService {
         Hold saved = holdRepository.save(hold);
         return holdMapper.toResponseDto(saved);
     }
+
+    public List<HoldResponseDto> getAllHolds() {
+        List<Hold> holds = holdRepository.findAll();
+        return holdMapper.toResponseDtoList(holds);
+    }
+
+    public List<HoldResponseDto> getHoldsByUser(Long userId) {
+        List<Hold> holds = holdRepository.findByUser_UserId(userId);
+        return holdMapper.toResponseDtoList(holds);
+    }
+
+
 }
