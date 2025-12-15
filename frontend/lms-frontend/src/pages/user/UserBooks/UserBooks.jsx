@@ -1,12 +1,13 @@
-import "./AdminBooks.css"
+import "./UserBooks.css"
 import { Navbar } from "../../../components/Navbar/Navbar"
 import { Sidebar } from "../../../components/Sidebar/Sidebar"
 import { useState } from "react"
 import { AddBook } from "../../../components/AddBook/AddBook"
 import { SearchBook } from "../../../components/SearchBook/SearchBook"
 import { EditBook } from "../../../components/EditBook/EditBook"
+import { BorrowBook } from "../../../components/BorrowBook/BorrowBook"
 
-export function AdminBooks({ triggerMessage }) {
+export function UserBooks({ triggerMessage }) {
 
     const [form, setForm] = useState(1)
     const [book, setBook] = useState(null)
@@ -15,10 +16,8 @@ export function AdminBooks({ triggerMessage }) {
         switch (form) {
             case 1:
                 return <SearchBook setForm={setForm} setBook={setBook}/>;
-            case 2:
-                return <AddBook triggerMessage={triggerMessage}/>;
             case 3:
-                return <EditBook book={book} triggerMessage={triggerMessage}/>
+                return <BorrowBook book={book}/>;
             default:
                 return null;
         }
@@ -26,7 +25,7 @@ export function AdminBooks({ triggerMessage }) {
 
 
     return <div>
-        <div className="adminbooks-container">
+        <div className="userbooks-container">
             <Navbar />
             <main>
                 <Sidebar />
@@ -34,7 +33,6 @@ export function AdminBooks({ triggerMessage }) {
                     <h2 className="page-tag">Books</h2>
                     <div className="options">
                         <button className="opt" onClick={() => setForm(1)}>🔍</button>
-                        <button className="opt" onClick={() => setForm(2)}>➕</button>
                     </div>
                     <div className="forms">
                         {renderForm(form)}

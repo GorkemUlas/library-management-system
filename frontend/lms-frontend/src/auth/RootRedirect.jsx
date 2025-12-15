@@ -1,8 +1,7 @@
 import { Navigate } from "react-router";
-import { useAuth } from "./AuthContext";
 
 export default function RootRedirect() {
-    const  role  = JSON.parse(localStorage.getItem("role"))
+    const  role  = localStorage.getItem("role")
     console.log(role);
     
     // Login değil → Guest

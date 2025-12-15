@@ -3,14 +3,10 @@ import { useState } from "react";
 import "./LoginRegisterForm.css";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { Message } from "../Message/Message";
-import { FcNext } from "react-icons/fc";
 import { jwtDecode } from "jwt-decode";
-import { useAuth } from "../../auth/AuthContext";
+import { login } from "../../auth/Auth";
 
 export function LoginRegisterForm({ heading, description, route, type, triggerMessage }) {
-
-    const {login} = useAuth()
     const url = "http://localhost:8080/auth"
     const [message, setMessage] = useState(null)
 
@@ -44,25 +40,24 @@ export function LoginRegisterForm({ heading, description, route, type, triggerMe
                 callback(response.data)
             })
             .catch(function (error) {
-                setMessage({ text: error, type: "error" });
-                console.log(error);
+                triggerMessage({text: error.response.data.error, type: "error"})
             });
     }
-
-
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit =  (e) => {
         e.preventDefault();
         if (type === 'register') {
             myRegister(formData)
         } else {
-            const data = myLogin(formData, (token) => {
+            const data = myLogin(formData, async (token) => {
                 const {sub, role} = jwtDecode(token)
-                login({ sub, role, token });
+                console.log(sub, role);
+                
+                await login({ sub, role, token });
                 navigate("/")
             })
 

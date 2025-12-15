@@ -1,0 +1,36 @@
+.editbook-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.editbook-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.editbook-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.editbook-form button {
+  padding: 10px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.editbook-form button:hover {
+  opacity: 0.8;
+}
+
+.editbook-container .deletebook-btn {
+    background-color: rgb(137, 0, 0);
+}

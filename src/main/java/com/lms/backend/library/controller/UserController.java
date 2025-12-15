@@ -18,10 +18,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    /*@PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.addUser(user);
-    }*/
+    /*
+     * @PostMapping
+     * public User createUser(@RequestBody User user) {
+     * return userService.addUser(user);
+     * }
+     */
 
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDto dto) {
@@ -29,9 +31,14 @@ public class UserController {
         return ResponseEntity.ok(created);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/by-id/{id}")
     public User getUser(@PathVariable Long id) {
         return userService.getUser(id);
+    }
+
+    @GetMapping("/by-email")
+    public User getUserByEmail(@RequestParam String email) {
+        return userService.getUserByEmail(email);
     }
 
     @GetMapping

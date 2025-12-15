@@ -1,7 +1,13 @@
 .admindasboard-container {
-    display:  flex;
+    display: flex;
     flex-direction: column;
     height: 100vh;
+    background-color: rgb(188, 215, 226);
+}
+
+.admindasboard-container .content .page-tag{
+    margin-left: 20px;
+    margin-top: 20px;
 }
 
 .admindasboard-container main {
@@ -9,6 +15,58 @@
     flex-grow: 1;
 }
 
-.admindasboard-container .sidebar {
+.admindasboard-container .content {
+    width: 100%;
     height: 100%;
+}
+
+.admindasboard-container .forms {
+    height: 575px;
+    padding: auto;
+}
+
+.admindasboard-container .boxes {
+    margin: 0 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.admindasboard-container .stat-box {
+    padding: 20px;
+    border-radius: 14px;
+    color: #fff;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.admindasboard-container .stat-title {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.admindasboard-container .stat-value {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+
+.admindasboard-container .stat-box.users {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+}
+
+.admindasboard-container .stat-box.books {
+    background: linear-gradient(135deg, #1cc88a, #13855c);
+}
+
+.admindasboard-container .stat-box.loans {
+    background: linear-gradient(135deg, #36b9cc, #258391);
+}
+
+.admindasboard-container .stat-box.holds {
+    background: linear-gradient(135deg, #f6c23e, #dda20a);
 }

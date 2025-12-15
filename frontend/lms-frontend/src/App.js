@@ -7,10 +7,10 @@ import { Login } from "./pages/Login/Login";
 import { Message } from "./components/Message/Message";
 import { useState } from "react";
 import RootRedirect from "./auth/RootRedirect";
-import { AuthProvider } from "./auth/AuthContext";
 import { UserDashboard } from "./pages/user/UserDashboard/UserDashboard";
 import { ProtectedRoute } from "./auth/ProtectedRoute";
 import { Unauthorized } from "./pages/Unauthorized/Unauthorized";
+import { UserBooks } from "./pages/user/UserBooks/UserBooks";
 
 function App() {
 
@@ -30,8 +30,6 @@ function App() {
             />
         )}
 
-
-        <AuthProvider>
             <BrowserRouter>
                 <Routes>
 
@@ -46,16 +44,16 @@ function App() {
 
                     {/* Admin */}
                     <Route path="/admin/dashboard" element={<ProtectedRoute roleParam="ADMIN"><AdminDashboard /></ProtectedRoute>} />
-                    <Route path="/admin/books" element={<AdminBooks triggerMessage={triggerMessage} />} />
+                    <Route path="/admin/books" element={<ProtectedRoute roleParam="ADMIN"><AdminBooks triggerMessage={triggerMessage} /></ProtectedRoute>} />
 
                     {/* User */}
-                    <Route path="/user/dashboard" element={<UserDashboard />} />
+                    <Route path="/user/dashboard" element={<ProtectedRoute roleParam="USER"><UserDashboard /></ProtectedRoute>} />
+                    <Route path="/user/books" element={<ProtectedRoute roleParam="USER"><UserBooks /></ProtectedRoute>} />
 
                     <Route path="/unauthorized" element={<Unauthorized />} />
 
                 </Routes>
             </BrowserRouter>
-        </AuthProvider>
 
     </div>
 }

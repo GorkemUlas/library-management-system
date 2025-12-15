@@ -1,7 +1,7 @@
 .sidebar-container {
     width: 70px;
     height: 100%;
-    background-color: #404c5c;
+    background-color: rgb(10, 14, 32);
     transition: 0.5s;
 }
 
@@ -16,8 +16,8 @@
     gap: 50px;
     padding: 2px;
     font-size: 20px;
-    border-bottom: 1px solid white;
-    color: white;
+    border-bottom: 1px solid rgb(54, 54, 54);
+    color: rgb(188, 215, 226);;
 }
 
 
@@ -30,13 +30,33 @@
 }
 
 .sidebar-container .item:hover {
-    background-color: #98c1d9;
+    opacity: 0.7;
 }
 
 .sidebar-container li .icon {
-    width: 65px;
-    height: 65px;
-    font-size: 65px;
-    background-color: #2f2b2a;
+    display: inline-flex;
+    text-align: center;
+    margin: 5px 0;
+    margin-left: 3px;
+    font-size: 40px;
+    background-color: #171515;
     color: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.sidebar-container .logout-btn{
+    cursor: pointer;
+    padding: 0 10px;
+    padding-top: 5px;
+    font-size: 30px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    margin: 10px 0;
+    margin-left: 10px;
+
+}
+.sidebar-container .logout-btn:hover {
+    opacity: 0.7;
 }

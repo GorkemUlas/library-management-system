@@ -1,7 +1,13 @@
 .userdashboard-container {
-    display:  flex;
+    display: flex;
     flex-direction: column;
     height: 100vh;
+    background-color: rgb(188, 215, 226);
+}
+
+.userdashboard-container .content .page-tag{
+    margin-left: 20px;
+    margin-top: 20px;
 }
 
 .userdashboard-container main {
@@ -9,6 +15,58 @@
     flex-grow: 1;
 }
 
-.userdashboard-container .sidebar {
+.userdashboard-container .content {
+    width: 100%;
     height: 100%;
+}
+
+.userdashboard-container .forms {
+    height: 575px;
+    padding: auto;
+}
+
+.userdashboard-container .boxes {
+    margin: 0 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.userdashboard-container .stat-box {
+    padding: 20px;
+    border-radius: 14px;
+    color: #fff;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.userdashboard-container .stat-title {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.userdashboard-container .stat-value {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+
+.userdashboard-container .stat-box.users {
+    background: linear-gradient(135deg, #4e73df, #224abe);
+}
+
+.userdashboard-container .stat-box.books {
+    background: linear-gradient(135deg, #1cc88a, #13855c);
+}
+
+.userdashboard-container .stat-box.loans {
+    background: linear-gradient(135deg, #36b9cc, #258391);
+}
+
+.userdashboard-container .stat-box.holds {
+    background: linear-gradient(135deg, #f6c23e, #dda20a);
 }

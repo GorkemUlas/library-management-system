@@ -4,7 +4,7 @@ export function Navbar() {
     return <div>
         <div className="navbar-container">
             <div>
-                <h2>Library Managment System</h2>
+                <h2>Library Management System</h2>
             </div>
             {/* <div>
                 <ul>
