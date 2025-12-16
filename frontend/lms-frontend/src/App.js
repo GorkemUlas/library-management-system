@@ -12,6 +12,8 @@ import { ProtectedRoute } from "./auth/ProtectedRoute";
 import { Unauthorized } from "./pages/Unauthorized/Unauthorized";
 import { UserBooks } from "./pages/user/UserBooks/UserBooks";
 import { AdminHolds } from "./pages/admin/AdminHolds/AdminHolds";
+import { AdminLoans } from "./pages/admin/AdminLoans/AdminLoans";
+import { AdminUsers } from "./pages/admin/AdminUsers/AdminUsers";
 
 function App() {
 
@@ -47,6 +49,8 @@ function App() {
                     <Route path="/admin/dashboard" element={<ProtectedRoute roleParam="ADMIN"><AdminDashboard /></ProtectedRoute>} />
                     <Route path="/admin/books" element={<ProtectedRoute roleParam="ADMIN"><AdminBooks triggerMessage={triggerMessage} /></ProtectedRoute>} />
                     <Route path="/admin/holds" element={<ProtectedRoute roleParam="ADMIN"><AdminHolds triggerMessage={triggerMessage} /></ProtectedRoute>} />
+                    <Route path="/admin/loans" element={<ProtectedRoute roleParam="ADMIN"><AdminLoans triggerMessage={triggerMessage} /></ProtectedRoute>} />
+                    <Route path="/admin/users" element={<ProtectedRoute roleParam="ADMIN"><AdminUsers triggerMessage={triggerMessage} /></ProtectedRoute>} />
 
                     {/* User */}
                     <Route path="/user/dashboard" element={<ProtectedRoute roleParam="USER"><UserDashboard triggerMessage={triggerMessage}/></ProtectedRoute>} />

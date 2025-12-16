@@ -15,7 +15,7 @@ export function SearchHolds({ setForm, setHold }) {
         ? await axios.get(`http://localhost:8080/holds/search?query=${query}`)
         : await axios.get(`http://localhost:8080/holds`);
 
-    // HOLDS BİLİNİYO 
+   
     console.log(res.data);
     
 

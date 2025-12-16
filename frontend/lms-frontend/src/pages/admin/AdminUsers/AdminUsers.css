@@ -1,0 +1,51 @@
+.adminusers-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: rgb(188, 215, 226);
+}
+
+.adminusers-container .content .page-tag{
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.adminusers-container main {
+    display: flex;
+    flex-grow: 1;
+}
+
+.adminusers-container .content {
+    width: 100%;
+    height: 100%;
+}
+.adminusers-container .content .options {
+    width: 95%;
+    margin: 0 auto;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 50px;
+
+}
+
+.adminusers-container .content .options button {
+    cursor: pointer;
+    font-size: 30px;
+    padding: 5px 20px;
+    display: inline-flex;
+    border: none;
+    outline: none;
+    background-color: rgb(33, 29, 29);
+    border-radius: 8px;
+}
+
+.adminusers-container .content .options button:hover {
+    opacity: 0.9;
+}
+
+.adminusers-container .forms {
+    height: 575px;
+    padding: auto;
+}
