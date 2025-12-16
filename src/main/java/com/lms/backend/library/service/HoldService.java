@@ -54,6 +54,14 @@ public class HoldService {
         return holdMapper.toResponseDto(saved);
     }
 
+    public void deleteHold(Long holdId) {
+        Hold hold = holdRepository.findById(holdId)
+                .orElseThrow(() -> new RuntimeException("Hold not found"));
+
+        holdRepository.delete(hold);
+    }
+
+
     public List<HoldResponseDto> getAllHolds() {
         return holdMapper.toResponseDtoList(holdRepository.findAll());
     }

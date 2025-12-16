@@ -3,8 +3,11 @@ package com.lms.backend.library.service;
 import com.lms.backend.library.dto.UserDto;
 import com.lms.backend.library.dto.UserSummaryDto;
 import com.lms.backend.library.entity.Loan;
+import com.lms.backend.library.entity.Hold;
+
 import com.lms.backend.library.entity.User;
 import com.lms.backend.library.mapper.UserMapper;
+import com.lms.backend.library.repository.HoldRepository;
 import com.lms.backend.library.repository.UserRepository;
 import com.lms.backend.library.repository.LoanRepository;
 
@@ -24,14 +27,17 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final LoanRepository loanRepository;
+    private final HoldRepository holdRepository;
     public UserService(UserRepository userRepository,
                        UserMapper userMapper,
                        PasswordEncoder passwordEncoder,
-                       LoanRepository loanRepository) {
+                       LoanRepository loanRepository,
+                       HoldRepository holdRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
-        this.loanRepository = loanRepository;    }
+        this.loanRepository = loanRepository;
+        this.holdRepository = holdRepository;}
 
     /**
      * Register / create user with email uniqueness checks and normalization.
@@ -92,12 +98,24 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        //  Aktif Loan kontrolü
+        boolean hasActiveLoans = loanRepository.existsByUser_UserIdAndStatus(userId, Loan.LoanStatus.ACTIVE);
+
+        // ✅Aktif Hold kontrolü
+        boolean hasActiveHolds = holdRepository.existsByUser_UserIdAndStatus(userId, Hold.HoldStatus.PENDING);
+
+        if (hasActiveLoans || hasActiveHolds) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "User cannot be deleted because they have active loans or holds.");
         }
-        userRepository.deleteById(id);
+
+        userRepository.delete(user);
     }
+
     /**
      * Runtime exception used to signal email conflict.
      * Kept as an inner class for convenience; you can move it to its own file if preferred.
@@ -126,5 +144,19 @@ public class UserService {
 
         return dto;
     }
+
+    public void changeUserRole(Long userId, String newRole) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        if (!newRole.equals("USER") && !newRole.equals("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid role");
+        }
+
+        user.setRole(newRole);
+        userRepository.save(user);
+    }
+
 
 }

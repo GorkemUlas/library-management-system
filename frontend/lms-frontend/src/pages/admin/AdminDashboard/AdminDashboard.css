@@ -1,72 +1,110 @@
-.admindasboard-container {
+/* ✅ BACKGROUND */
+.admindashboard-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: rgb(188, 215, 226);
+    background-color: rgb(188, 215, 226); /* açık mavi */
+    font-family: "Inter", sans-serif;
 }
 
-.admindasboard-container .content .page-tag{
-    margin-left: 20px;
-    margin-top: 20px;
-}
-
-.admindasboard-container main {
+main {
     display: flex;
-    flex-grow: 1;
+    flex: 1;
 }
 
-.admindasboard-container .content {
-    width: 100%;
-    height: 100%;
+.content {
+    flex: 1;
+    padding: 30px 40px;
+    overflow-y: auto;
+    color: #1f2937; /* slate-800 */
 }
 
-.admindasboard-container .forms {
-    height: 575px;
-    padding: auto;
+.page-tag {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #1f2937; /* koyu slate */
 }
 
-.admindasboard-container .boxes {
-    margin: 0 10px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.admindasboard-container .stat-box {
+/* ✅ KARTLAR (KOYU RENK) */
+.card {
+    background: #111827; /* slate-900 */
+    border-radius: 12px;
     padding: 20px;
-    border-radius: 14px;
-    color: #fff;
-    min-height: 110px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #374151; /* slate-700 */
 }
 
-.admindasboard-container .stat-title {
-    font-size: 14px;
-    opacity: 0.9;
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
 }
 
-.admindasboard-container .stat-value {
-    font-size: 32px;
-    font-weight: bold;
+.card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #d1d5db; /* slate-300 */
 }
 
-
-.admindasboard-container .stat-box.users {
-    background: linear-gradient(135deg, #4e73df, #224abe);
+.card p {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f9fafb; /* slate-50 */
+    margin: 4px 0;
 }
 
-.admindasboard-container .stat-box.books {
-    background: linear-gradient(135deg, #1cc88a, #13855c);
+/* ✅ GRID LAYOUTS */
+.top-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
 }
 
-.admindasboard-container .stat-box.loans {
-    background: linear-gradient(135deg, #36b9cc, #258391);
+.middle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
 }
 
-.admindasboard-container .stat-box.holds {
-    background: linear-gradient(135deg, #f6c23e, #dda20a);
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-bottom: 40px;
+}
+
+/* ✅ RENKLİ SOL BORDERLAR (PARLAK TONLAR – KOYU KARTTA NET GÖRÜNÜR) */
+.blue {
+    border-left: 6px solid #60a5fa; /* blue-400 → daha parlak */
+}
+
+.yellow {
+    border-left: 6px solid #fde047; /* yellow-300 */
+}
+
+.red {
+    border-left: 6px solid #f87171; /* red-400 */
+}
+
+.green {
+    border-left: 6px solid #4ade80; /* green-400 */
+}
+
+.gray {
+    border-left: 6px solid #d1d5db; /* gray-300 */
+}
+
+/* ✅ LOADING & ERROR */
+.loading,
+.error {
+    font-size: 20px;
+    text-align: center;
+    margin-top: 50px;
+    color: #1f2937;
+}
+
+.error {
+    color: #ef4444;
 }

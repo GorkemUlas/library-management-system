@@ -24,6 +24,13 @@ public class HoldController {
         return holdService.createHold(dto);
     }
 
+    @DeleteMapping("/{holdId}")
+    public ResponseEntity<Void> deleteHold(@PathVariable Long holdId) {
+        holdService.deleteHold(holdId);
+        return ResponseEntity.noContent().build();
+    }
+
+
     @GetMapping
     public List<HoldResponseDto> getAllHolds() {
         return holdService.getAllHolds();
