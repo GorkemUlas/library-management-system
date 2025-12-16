@@ -1,5 +1,5 @@
 .unauthorized-container{
-    background: linear-gradient(rgb(45, 41, 41) 5%, rgb(207, 209, 216));
+    background: linear-gradient(rgb(61, 1, 1) 5%, rgb(10, 14, 32));
     height: 100vh;
 }
 
@@ -13,6 +13,7 @@
     box-shadow:
         0 10px 25px rgba(0, 0, 0, 0.5),
         0 0 0 1px rgba(255, 255, 255, 0.05);
+    border: 1px solid white;
 }
 
 .unauthorized-image {
@@ -33,4 +34,22 @@
     font-size: 0.95rem;
     line-height: 1.5;
     color: #94a3b8;
+}
+
+.unauthorized-card .gohome-btn {
+    cursor: pointer;
+    padding: 10px 40px;
+    border: none;
+    outline: none;
+    margin-top: 20px;
+    border-radius: 8px;
+    background-color: rgb(3, 150, 62);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow: 0 20px 40px rgba(67, 56, 56, 0.6);
+}
+.unauthorized-card .gohome-btn:hover {
+    opacity: 0.6;
 }

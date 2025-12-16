@@ -7,27 +7,28 @@
     font-family: "Inter", sans-serif;
 }
 
-main {
+.admindashboard-container main {
     display: flex;
     flex: 1;
 }
 
-.content {
-    flex: 1;
-    padding: 30px 40px;
-    overflow-y: auto;
-    color: #1f2937; /* slate-800 */
+.admindashboard-container .content {
+    width: 100%;
+    height: 100%;
 }
 
-.page-tag {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 25px;
-    color: #1f2937; /* koyu slate */
+.admindashboard-container .page-tag {
+    margin-left: 20px;
+    margin-top: 20px;
 }
 
 /* ✅ KARTLAR (KOYU RENK) */
-.card {
+.admindashboard-container .cards {
+    width: 95%;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+.admindashboard-container .card {
     background: #111827; /* slate-900 */
     border-radius: 12px;
     padding: 20px;
@@ -36,18 +37,18 @@ main {
     border: 1px solid #374151; /* slate-700 */
 }
 
-.card:hover {
+.admindashboard-container .card:hover {
     transform: translateY(-4px);
     box-shadow: 0 6px 18px rgba(0,0,0,0.6);
 }
 
-.card h3 {
+.admindashboard-container .card h3 {
     font-size: 18px;
     margin-bottom: 10px;
     color: #d1d5db; /* slate-300 */
 }
 
-.card p {
+.admindashboard-container .card p {
     font-size: 20px;
     font-weight: 600;
     color: #f9fafb; /* slate-50 */
@@ -55,49 +56,49 @@ main {
 }
 
 /* ✅ GRID LAYOUTS */
-.top-grid {
+.admindashboard-container .top-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
     margin-bottom: 40px;
 }
 
-.middle-grid {
+.admindashboard-container .middle-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
     margin-bottom: 40px;
 }
 
-.bottom-grid {
+.admindashboard-container .bottom-grid {
     display: grid;
     grid-template-columns: 1fr;
     margin-bottom: 40px;
 }
 
 /* ✅ RENKLİ SOL BORDERLAR (PARLAK TONLAR – KOYU KARTTA NET GÖRÜNÜR) */
-.blue {
+.admindashboard-container .blue {
     border-left: 6px solid #60a5fa; /* blue-400 → daha parlak */
 }
 
-.yellow {
+.admindashboard-container .yellow {
     border-left: 6px solid #fde047; /* yellow-300 */
 }
 
-.red {
+.admindashboard-container .red {
     border-left: 6px solid #f87171; /* red-400 */
 }
 
-.green {
+.admindashboard-container .green {
     border-left: 6px solid #4ade80; /* green-400 */
 }
 
-.gray {
+.admindashboard-container .gray {
     border-left: 6px solid #d1d5db; /* gray-300 */
 }
 
 /* ✅ LOADING & ERROR */
-.loading,
+.admindashboard-container .loading,
 .error {
     font-size: 20px;
     text-align: center;
@@ -105,6 +106,6 @@ main {
     color: #1f2937;
 }
 
-.error {
+.admindashboard-container .error {
     color: #ef4444;
 }

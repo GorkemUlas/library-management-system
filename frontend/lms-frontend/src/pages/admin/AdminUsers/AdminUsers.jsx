@@ -11,7 +11,7 @@ export function AdminUsers({ triggerMessage }) {
     function renderForm(form) {
         switch (form) {
             case 1:
-                return <SearchUsers setForm={setForm} setUser={setUser} />;
+                return <SearchUsers setForm={setForm} setUser={setUser} triggerMessage={triggerMessage}/>;
             // case 2:
             //     return <LoanBook hold={hold} triggerMessage={triggerMessage} />;
             // case 3:
@@ -26,7 +26,7 @@ export function AdminUsers({ triggerMessage }) {
             <main>
                 <Sidebar />
                 <div className="content">
-                    <h2 className="page-tag">Holds</h2>
+                    <h2 className="page-tag">Users</h2>
                     <div className="options">
                         <button className="opt" onClick={() => setForm(1)}>🔍</button>
                     </div>

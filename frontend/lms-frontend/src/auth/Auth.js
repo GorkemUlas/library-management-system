@@ -2,8 +2,6 @@ import axios from "axios";
 
 
 export const login = async (userData, navigate) => {
-    console.log(userData);
-
     const url = "http://localhost:8080/users/by-email"
     await axios.get(url, {
         params: {

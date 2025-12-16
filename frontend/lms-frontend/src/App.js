@@ -33,33 +33,34 @@ function App() {
             />
         )}
 
-            <BrowserRouter>
-                <Routes>
+        <BrowserRouter>
+            <Routes>
 
-                    <Route path="/" element={<RootRedirect />} />
+                <Route path="/" element={<RootRedirect />} />
 
-                    {/* Guest */}
-                    <Route path="/guest" element={<Guest />} />
+                {/* Guest */}
+                <Route path="/guest" element={<Guest />} />
 
-                    {/* Auth */}
-                    <Route path="/login" element={<Login triggerMessage={triggerMessage} />} />
-                    <Route path="/register" element={<Register triggerMessage={triggerMessage} />} />
+                {/* Auth */}
+                <Route path="/login" element={<Login triggerMessage={triggerMessage} />} />
+                <Route path="/register" element={<Register triggerMessage={triggerMessage} />} />
 
-                    {/* Admin */}
-                    <Route path="/admin/dashboard" element={<ProtectedRoute roleParam="ADMIN"><AdminDashboard /></ProtectedRoute>} />
-                    <Route path="/admin/books" element={<ProtectedRoute roleParam="ADMIN"><AdminBooks triggerMessage={triggerMessage} /></ProtectedRoute>} />
-                    <Route path="/admin/holds" element={<ProtectedRoute roleParam="ADMIN"><AdminHolds triggerMessage={triggerMessage} /></ProtectedRoute>} />
-                    <Route path="/admin/loans" element={<ProtectedRoute roleParam="ADMIN"><AdminLoans triggerMessage={triggerMessage} /></ProtectedRoute>} />
-                    <Route path="/admin/users" element={<ProtectedRoute roleParam="ADMIN"><AdminUsers triggerMessage={triggerMessage} /></ProtectedRoute>} />
+                {/* Admin */}
+                <Route path="/admin/dashboard" element={<ProtectedRoute roleParam="ADMIN"><AdminDashboard /></ProtectedRoute>} />
+                <Route path="/admin/books" element={<ProtectedRoute roleParam="ADMIN"><AdminBooks triggerMessage={triggerMessage} /></ProtectedRoute>} />
+                <Route path="/admin/holds" element={<ProtectedRoute roleParam="ADMIN"><AdminHolds triggerMessage={triggerMessage} /></ProtectedRoute>} />
+                <Route path="/admin/loans" element={<ProtectedRoute roleParam="ADMIN"><AdminLoans triggerMessage={triggerMessage} /></ProtectedRoute>} />
+                <Route path="/admin/users" element={<ProtectedRoute roleParam="ADMIN"><AdminUsers triggerMessage={triggerMessage} /></ProtectedRoute>} />
 
-                    {/* User */}
-                    <Route path="/user/dashboard" element={<ProtectedRoute roleParam="USER"><UserDashboard triggerMessage={triggerMessage}/></ProtectedRoute>} />
-                    <Route path="/user/books" element={<ProtectedRoute roleParam="USER"><UserBooks triggerMessage={triggerMessage}/></ProtectedRoute>} />
+                {/* User */}
+                <Route path="/user/dashboard" element={<ProtectedRoute roleParam="USER"><UserDashboard triggerMessage={triggerMessage} /></ProtectedRoute>} />
+                <Route path="/user/books" element={<ProtectedRoute roleParam="USER"><UserBooks triggerMessage={triggerMessage} /></ProtectedRoute>} />
 
-                    <Route path="/unauthorized" element={<Unauthorized />} />
+                <Route path="/unauthorized" element={<Unauthorized />} />
+                <Route path="*" element={<Unauthorized />} />
 
-                </Routes>
-            </BrowserRouter>
+            </Routes>
+        </BrowserRouter>
 
     </div>
 }

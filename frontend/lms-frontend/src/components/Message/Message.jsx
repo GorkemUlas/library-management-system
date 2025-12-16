@@ -13,7 +13,7 @@ export function Message({ text, type = "success", onClose, duration = 2000 }) {
 
   return (
     <div className={`message-container ${type}`}>
-      {text}
+      <div className="msg">{text}</div>
     </div>
   );
 }

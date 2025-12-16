@@ -2,8 +2,14 @@ import React, { useEffect, useState } from "react";
 import "./SearchUsers.css";
 import axios from "axios";
 import { ActionModal } from "../ActionModal/ActionModal";
+import { useNavigate } from "react-router";
 
-export function SearchUsers({ setForm, setUser }) {
+export function SearchUsers({ setForm, setUser, triggerMessage }) {
+
+    const thisUser = JSON.parse(localStorage.getItem("user"))
+
+    const navigate = useNavigate()
+
     const [query, setQuery] = useState("");
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -17,12 +23,41 @@ export function SearchUsers({ setForm, setUser }) {
 
 
     const deleteUser = (id) => {
-        console.log("delete, ", id);
+        const url = "http://localhost:8080/users/" + id
+        console.log("delete, ", id, url);
+        axios.delete(url).then(res => {
+            triggerMessage({ text: "Deleted Succesfully!", type: "success" })
+            navigate("/")
+        }).catch(
+            err => {
+                triggerMessage({ text: err.response.data.message ? err.response.data.message : "Database constraint violation", type: "error" })
+
+            }
+        )
+
 
     }
 
-    const changeUserRole = (id) => {
+    const changeUserRole = (id, oldRole) => {
+        const newRole = oldRole === "ADMIN" ? "USER" : "ADMIN"
+        const url = "http://localhost:8080/users/" + id + "/role"
         console.log("change role, ", id);
+
+        axios.put(url, null, {
+            params: {
+                role: newRole
+            }
+        }).then(res => {
+            console.log(res);
+
+            triggerMessage({ text: "Changed Role Succesfully!", type: "success" })
+            navigate("/")
+        }).catch(
+            err => {
+                triggerMessage({ text: err.response.data.message ? err.response.data.message : "Database constraint violation", type: "error" })
+
+            }
+        )
     }
 
     const openRoleChangeModal = (user) => {
@@ -37,7 +72,7 @@ export function SearchUsers({ setForm, setUser }) {
             primaryText: isAdmin ? "Remove admin" : "Make admin",
             secondaryText: "Cancel",
             onPrimary: () => {
-                changeUserRole(user.userId);
+                changeUserRole(user.userId, user.role);
                 closeModal();
             },
         });
@@ -108,18 +143,22 @@ export function SearchUsers({ setForm, setUser }) {
                                 }}
                             >
                                 <div className="user-info">
-                                    <div className="user-title">{user.name}</div>
+                                    <div className="user-title">{user.name} {user.userId == thisUser.userId && "(you)"}</div>
                                     <div className="user-date">{user.username}
                                     </div>
                                     <div className={`user-role ${user.role?.toLowerCase()}`}>{user.role}
                                     </div>
                                 </div>
-                                <button className="btn delete-btn" onClick={() => openDeleteUserModal(user)}>
-                                    Delete
-                                </button>
-                                <button className="btn role-btn" onClick={() => openRoleChangeModal(user)}>
-                                    {user.role === "ADMIN" ? "Remove Admin" : "Make Admin"}
-                                </button>
+
+                                {
+                                    user.userId != thisUser.userId &&
+                                    <div><button className="btn delete-btn" onClick={() => openDeleteUserModal(user)}>
+                                        Delete
+                                    </button>
+                                        <button className="btn role-btn" onClick={() => openRoleChangeModal(user)}>
+                                            {user.role === "ADMIN" ? "Remove Admin" : "Make Admin"}
+                                        </button></div>
+                                }
                             </div>
                         ))
                     )}

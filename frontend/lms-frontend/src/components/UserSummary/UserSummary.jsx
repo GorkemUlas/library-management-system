@@ -36,8 +36,14 @@ export function UserSummary({ activeLoans, holds, history, triggerMessage }) {
 
     const confirmAction = () => {
         if (modalData.type === "HOLD") {
-            console.log("Cancel Hold", modalData.item);
-            // axios.put("/holds/cancel")
+            const url = "http://localhost:8080/holds/" + modalData.item.holdId
+            axios.delete(url).then(res => {
+                triggerMessage({ text: "Cancelled Successfully!", type: "success" })
+                navigate("/")
+            }).catch(err => {
+                console.log(err);
+                triggerMessage({ text: "Unexpected Error!", type: "error" })
+            })
         }
 
         if (modalData.type === "LOAN") {
@@ -49,7 +55,7 @@ export function UserSummary({ activeLoans, holds, history, triggerMessage }) {
 
             }).catch(err => {
                 console.log(err);
-
+                triggerMessage({ text: "Unexpected Error!", type: "error" })
             })
         }
 

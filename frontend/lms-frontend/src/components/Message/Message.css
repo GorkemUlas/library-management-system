@@ -5,21 +5,26 @@
   min-width: 250px;
   padding: 12px 16px;
   border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  color: white;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   animation: slideIn 0.3s ease, fadeOut 0.3s ease 1.7s;
   z-index: 9999;
 }
 
+.message-container .msg {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
 
 .message-container.success {
-  background-color: #16a34a; /* green */
+  background-color: #16a34a;
+  /* green */
 }
 
 .message-container.error {
-  background-color: #dc2626; /* red */
+  background-color: #dc2626;
+  /* red */
 }
 
 .message-container.warning {
@@ -32,6 +37,7 @@
     transform: translateX(120%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;

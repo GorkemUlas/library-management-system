@@ -28,16 +28,18 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final LoanRepository loanRepository;
     private final HoldRepository holdRepository;
+
     public UserService(UserRepository userRepository,
-                       UserMapper userMapper,
-                       PasswordEncoder passwordEncoder,
-                       LoanRepository loanRepository,
-                       HoldRepository holdRepository) {
+            UserMapper userMapper,
+            PasswordEncoder passwordEncoder,
+            LoanRepository loanRepository,
+            HoldRepository holdRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
         this.loanRepository = loanRepository;
-        this.holdRepository = holdRepository;}
+        this.holdRepository = holdRepository;
+    }
 
     /**
      * Register / create user with email uniqueness checks and normalization.
@@ -78,13 +80,13 @@ public class UserService {
             throw new EmailAlreadyUsedException("Email already in use: " + normalizedEmail, ex);
         }
 
-
     }
 
     public User getUser(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
+
     public User getUserByEmail(String email) {
         if (email == null || email.isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is required");
@@ -102,14 +104,14 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        //  Aktif Loan kontrolü
+        // Aktif Loan kontrolü
         boolean hasActiveLoans = loanRepository.existsByUser_UserIdAndStatus(userId, Loan.LoanStatus.ACTIVE);
 
         // ✅Aktif Hold kontrolü
         boolean hasActiveHolds = holdRepository.existsByUser_UserIdAndStatus(userId, Hold.HoldStatus.PENDING);
 
         if (hasActiveLoans || hasActiveHolds) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "User cannot be deleted because they have active loans or holds.");
         }
 
@@ -118,17 +120,18 @@ public class UserService {
 
     /**
      * Runtime exception used to signal email conflict.
-     * Kept as an inner class for convenience; you can move it to its own file if preferred.
+     * Kept as an inner class for convenience; you can move it to its own file if
+     * preferred.
      */
     public static class EmailAlreadyUsedException extends RuntimeException {
         public EmailAlreadyUsedException(String message) {
             super(message);
         }
+
         public EmailAlreadyUsedException(String message, Throwable cause) {
             super(message, cause);
         }
     }
-
 
     public UserSummaryDto getUserSummary(Long id) {
         User user = userRepository.findById(id)
@@ -153,10 +156,19 @@ public class UserService {
         if (!newRole.equals("USER") && !newRole.equals("ADMIN")) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid role");
         }
+        // Aktif Loan kontrolü
+        boolean hasActiveLoans = loanRepository.existsByUser_UserIdAndStatus(userId, Loan.LoanStatus.ACTIVE);
+
+        // ✅Aktif Hold kontrolü
+        boolean hasActiveHolds = holdRepository.existsByUser_UserIdAndStatus(userId, Hold.HoldStatus.PENDING);
+
+        if (hasActiveLoans || hasActiveHolds) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "User cannot be deleted because they have active loans or holds.");
+        }
 
         user.setRole(newRole);
         userRepository.save(user);
     }
-
 
 }

@@ -21,7 +21,6 @@ export function LoginRegisterForm({ heading, description, route, type, triggerMe
     const myRegister = (data) => {
         axios.post(`${url}/register`, data)
             .then(function (response) {
-                console.log(response);
                 triggerMessage({ text: "Registered Succesfully!", type: "success" })
                 navigate("/login")
             })
