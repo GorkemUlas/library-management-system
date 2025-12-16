@@ -9,13 +9,13 @@ export function BorrowBook({ book, triggerMessage }) {
 
     const isAvailable = book.availableCopies > 0;
     const holdRequestHandler = () => {
-        const url = "http://localhost:8080/holds"
+        const url = "http://localhost:8080/loans/borrow"
         console.log(user.userId, book.bookId);
 
         axios.post(url, {userId: user.userId, bookId: book.bookId})
         .then(res => {
             console.log(res);
-            triggerMessage({text: "Requested Successfully!", type:"success"})
+            triggerMessage({text: res.data.message, type:"success"})
             navigate("/")
         })
         .catch((err) => {
@@ -56,11 +56,10 @@ export function BorrowBook({ book, triggerMessage }) {
 
             <div className="borrow-action">
                 <button
-                    className={`hold-btn ${!isAvailable ? "disabled" : ""}`}
-                    disabled={!isAvailable}
+                    className={`hold-btn ${isAvailable ? " borrow" : ""}`}
                     onClick={holdRequestHandler}
                 >
-                    Place Hold Request
+                    {isAvailable ? "Borrow Book" : "Place Hold"}
                 </button>
             </div>
 

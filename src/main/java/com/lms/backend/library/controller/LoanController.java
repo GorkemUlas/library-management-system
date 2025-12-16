@@ -55,4 +55,9 @@ public class LoanController {
         return loanService.getActiveLoans(userId);
     }
 
+    @GetMapping("/history")
+    public List<LoanResponseDto> getLoanHistory(@RequestParam Long userId) {
+        return loanService.getLoanHistory(userId);
+    }
+
 }

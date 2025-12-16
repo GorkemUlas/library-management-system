@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: rgb(188, 215, 226);
+    background-color: rgb(231, 235, 237);
 }
 
 .userbooks-container .content .page-tag{

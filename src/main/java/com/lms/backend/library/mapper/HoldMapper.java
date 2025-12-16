@@ -16,10 +16,11 @@ public interface HoldMapper {
     Hold toEntity(HoldDto dto);
 
     @Mapping(source = "holdId", target = "holdId")
-    @Mapping(source = "user.userId", target = "userId")        // ✅ düzeltildi
+    //@Mapping(source = "user.userId", target = "userId")        //  düzeltildi
     @Mapping(source = "book.bookId", target = "bookId")            // Book id alanına göre ayarla
     @Mapping(source = "book.title", target = "bookTitle")
-    @Mapping(source = "book.author", target = "bookAuthor")
+    @Mapping(source= "book.imageUrl", target ="bookImage")
+   // @Mapping(source = "book.author", target = "bookAuthor")
     @Mapping(source = "holdDate", target = "holdDate")
     @Mapping(source = "status", target = "status")
 

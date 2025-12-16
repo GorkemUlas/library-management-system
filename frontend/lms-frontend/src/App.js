@@ -49,7 +49,7 @@ function App() {
                     <Route path="/admin/holds" element={<ProtectedRoute roleParam="ADMIN"><AdminHolds triggerMessage={triggerMessage} /></ProtectedRoute>} />
 
                     {/* User */}
-                    <Route path="/user/dashboard" element={<ProtectedRoute roleParam="USER"><UserDashboard /></ProtectedRoute>} />
+                    <Route path="/user/dashboard" element={<ProtectedRoute roleParam="USER"><UserDashboard triggerMessage={triggerMessage}/></ProtectedRoute>} />
                     <Route path="/user/books" element={<ProtectedRoute roleParam="USER"><UserBooks triggerMessage={triggerMessage}/></ProtectedRoute>} />
 
                     <Route path="/unauthorized" element={<Unauthorized />} />

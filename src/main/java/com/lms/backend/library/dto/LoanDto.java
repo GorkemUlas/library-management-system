@@ -11,6 +11,7 @@ public class LoanDto {
     @NotNull(message = "Book ID cannot be null")
     private Long bookId;
 
+
     // Getter & Setter
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }

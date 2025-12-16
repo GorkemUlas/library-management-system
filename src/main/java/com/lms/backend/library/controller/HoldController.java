@@ -19,14 +19,20 @@ public class HoldController {
         this.holdService = holdService;
     }
 
+    @PostMapping
+    public HoldResponseDto createHold(@RequestBody HoldDto dto) {
+        return holdService.createHold(dto);
+    }
+
     @GetMapping
     public List<HoldResponseDto> getAllHolds() {
         return holdService.getAllHolds();
     }
 
-    @PostMapping
-    public HoldResponseDto createHold(@RequestBody HoldDto dto) {
-        return holdService.createHold(dto);
+    @GetMapping("/user")
+    public List<HoldResponseDto> getHoldsByUser(@RequestParam Long userId) {
+        return holdService.getHoldsByUser(userId);
     }
+
 
 }

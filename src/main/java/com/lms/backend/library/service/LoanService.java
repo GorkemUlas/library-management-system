@@ -12,7 +12,10 @@ import com.lms.backend.library.entity.Book;
 import com.lms.backend.library.entity.User;
 import com.lms.backend.library.entity.Loan;
 import com.lms.backend.library.repository.LoanRepository;
+import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -29,11 +32,11 @@ public class LoanService {
     private final HoldRepository holdRepository;
 
     public LoanService(LoanRepository loanRepository,
-                       UserRepository userRepository,
-                       BookRepository bookRepository,
-                       LoanMapper loanMapper,
-                       HoldService holdService,
-                       HoldRepository holdRepository) {
+            UserRepository userRepository,
+            BookRepository bookRepository,
+            LoanMapper loanMapper,
+            HoldService holdService,
+            HoldRepository holdRepository) {
 
         this.loanRepository = loanRepository;
         this.userRepository = userRepository;
@@ -44,18 +47,27 @@ public class LoanService {
     }
 
     public LoanResponseDto createLoan(LoanDto dto) {
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        Loan loan = loanMapper.toEntity(dto);
+        Book book = bookRepository.findById(dto.getBookId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
 
-        loan.setUser(
-                userRepository.findById(dto.getUserId())
-                        .orElseThrow(() -> new RuntimeException("User not found"))
-        );
+        Loan loan = new Loan();
+        loan.setUser(user);
+        loan.setBook(book);
+        loan.setIssueDate(LocalDate.now());
+        loan.setDueDate(LocalDate.now().plusDays(14));
+        loan.setReturnDate(null);
+        loan.setFineAmount(0.0);
+        loan.setStatus(Loan.LoanStatus.ACTIVE);
 
-        loan.setBook(
-                bookRepository.findById(dto.getBookId())
-                        .orElseThrow(() -> new RuntimeException("Book not found"))
-        );
+        // stok düş
+        book.setAvailableCopies(book.getAvailableCopies() - 1);
+        if (book.getAvailableCopies() == 0) {
+            book.setStatus(Book.BookStatus.NOT_AVAILABLE);
+        }
+        bookRepository.save(book);
 
         Loan saved = loanRepository.save(loan);
         return loanMapper.toResponseDto(saved);
@@ -79,63 +91,79 @@ public class LoanService {
     public LoanResponseDto borrowBook(LoanDto dto) {
 
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
         Book book = bookRepository.findById(dto.getBookId())
-                .orElseThrow(() -> new RuntimeException("Book not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
 
-        // Stok kontrolü
+        boolean alreadyBorrowed = loanRepository
+                .existsByUser_UserIdAndBook_BookIdAndStatus(
+                        dto.getUserId(), dto.getBookId(), Loan.LoanStatus.ACTIVE);
+
+        if (alreadyBorrowed) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "You already borrowed this book");
+        }
+
+        // 📌 STOK YOK → HOLD
         if (book.getAvailableCopies() <= 0) {
 
-            // HOLD OLUŞTUR
             HoldDto holdDto = new HoldDto();
             holdDto.setUserId(dto.getUserId());
             holdDto.setBookId(dto.getBookId());
 
             holdService.createHold(holdDto);
 
-            throw new RuntimeException("Book is not available. You have been added to the hold queue.");
+            LoanResponseDto response = new LoanResponseDto();
+            response.setBookId(book.getBookId());
+            response.setBookTitle(book.getTitle());
+            response.setBookImage(book.getImageUrl());
+
+            response.setStatus("HOLD_PLACED");
+            response.setMessage("Book is not available. You have been added to the hold queue.");
+
+            return response;
         }
 
-        // Aynı kullanıcı aynı kitabı iade etmeden tekrar alamaz
-        boolean alreadyBorrowed = loanRepository.existsByUser_UserIdAndBook_BookIdAndReturnDateIsNull(
-                dto.getUserId(), dto.getBookId()
-        );
-        if (alreadyBorrowed) {
-            throw new RuntimeException("You already borrowed this book");
-        }
-
+        // 📌 BORROW
         Loan loan = new Loan();
         loan.setUser(user);
         loan.setBook(book);
         loan.setIssueDate(LocalDate.now());
         loan.setDueDate(LocalDate.now().plusDays(14));
-        loan.setReturnDate(null);
         loan.setFineAmount(0.0);
+        loan.setStatus(Loan.LoanStatus.ACTIVE);
 
-        // stok azalt
         book.setAvailableCopies(book.getAvailableCopies() - 1);
+        if (book.getAvailableCopies() == 0) {
+            book.setStatus(Book.BookStatus.NOT_AVAILABLE);
+        }
         bookRepository.save(book);
 
         Loan saved = loanRepository.save(loan);
-        return loanMapper.toResponseDto(saved);
+
+        LoanResponseDto response = loanMapper.toResponseDto(saved);
+        response.setStatus("BORROWED");
+        response.setMessage("Book borrowed successfully");
+
+        return response;
     }
 
     public LoanResponseDto returnBook(Long loanId) {
 
         Loan loan = loanRepository.findById(loanId)
-                .orElseThrow(() -> new RuntimeException("Loan not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Loan not found"));
 
-        if (loan.getReturnDate() != null) {
-            throw new RuntimeException("Book already returned");
+        if (loan.getStatus() == Loan.LoanStatus.RETURNED) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Book already returned");
         }
 
-        Book book = loan.getBook(); // book burada tanımlandı
+        Book book = loan.getBook();
 
         // HOLD SIRASINI KONTROL ET
         List<Hold> holds = holdRepository.findByBook_BookIdAndStatusOrderByHoldDateAsc(
-                book.getBookId(), Hold.HoldStatus.PENDING
-        );
+                book.getBookId(), Hold.HoldStatus.PENDING);
 
         if (!holds.isEmpty()) {
             Hold next = holds.get(0);
@@ -148,11 +176,14 @@ public class LoanService {
             autoLoan.setUserId(next.getUser().getUserId());
             autoLoan.setBookId(book.getBookId());
 
-            borrowBook(autoLoan);
+            createLoan(autoLoan);
         }
 
+        // Loan güncelle
         loan.setReturnDate(LocalDate.now());
+        loan.setStatus(Loan.LoanStatus.RETURNED);
 
+        // Gecikme kontrolü
         LocalDate dueDate = loan.getIssueDate().plusDays(14);
 
         if (loan.getReturnDate().isAfter(dueDate)) {
@@ -164,6 +195,7 @@ public class LoanService {
 
         // stok artır
         book.setAvailableCopies(book.getAvailableCopies() + 1);
+        book.setStatus(Book.BookStatus.AVAILABLE);
         bookRepository.save(book);
 
         Loan saved = loanRepository.save(loan);
@@ -171,11 +203,13 @@ public class LoanService {
     }
 
     public List<LoanResponseDto> getActiveLoans(Long userId) {
-        List<Loan> loans = loanRepository.findByUser_UserIdAndReturnDateIsNull(userId);
+        List<Loan> loans = loanRepository.findByUser_UserIdAndStatus(userId, Loan.LoanStatus.ACTIVE);
         return loanMapper.toResponseDtoList(loans);
     }
 
-
+    public List<LoanResponseDto> getLoanHistory(Long userId) {
+        List<Loan> loans = loanRepository.findByUser_UserIdAndStatus(userId, Loan.LoanStatus.RETURNED);
+        return loanMapper.toResponseDtoList(loans);
+    }
 
 }
-

@@ -6,6 +6,7 @@ import com.lms.backend.library.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.lms.backend.library.dto.UserSummaryDto;
 
 import java.util.List;
 
@@ -50,4 +51,12 @@ public class UserController {
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
+
+
+    @GetMapping("/summary/{id}")
+    public UserSummaryDto getUserSummary(@PathVariable Long id) {
+        return userService.getUserSummary(id);
+    }
+
+
 }

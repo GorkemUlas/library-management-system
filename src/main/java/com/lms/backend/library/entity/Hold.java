@@ -28,6 +28,8 @@ public class Hold {
 
     @Enumerated(EnumType.STRING)
     private HoldStatus status; // Pending, Approved, Cancelled
+    
+    private Integer position;
 
     // Getter & Setter
 
@@ -69,5 +71,13 @@ public class Hold {
 
     public void setStatus(HoldStatus status) {
         this.status = status;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
     }
 }

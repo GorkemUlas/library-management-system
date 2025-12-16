@@ -25,14 +25,15 @@ public interface LoanMapper {
     Loan toEntity(LoanDto dto);
 
     @Mapping(source = "loanId", target = "loanId")
-    @Mapping(source = "user.userId", target = "userId")
+    //@Mapping(source = "user.userId", target = "userId")
     @Mapping(source = "book.bookId", target = "bookId")
     @Mapping(source = "book.title", target = "bookTitle")
-    @Mapping(source = "book.author", target = "bookAuthor")
+    //@Mapping(source = "book.author", target = "bookAuthor")
     @Mapping(source = "issueDate", target = "issueDate")
     @Mapping(source = "dueDate", target = "dueDate")
     @Mapping(source = "returnDate", target = "returnDate")
     @Mapping(source = "fineAmount", target = "fineAmount")
+    @Mapping(source = "book.imageUrl", target = "bookImage")
     LoanResponseDto toResponseDto(Loan loan);
 
     List<LoanResponseDto> toResponseDtoList(List<Loan> loans);

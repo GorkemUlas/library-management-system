@@ -9,7 +9,6 @@ import com.lms.backend.library.mapper.HoldMapper;
 import com.lms.backend.library.repository.BookRepository;
 import com.lms.backend.library.repository.UserRepository;
 import com.lms.backend.library.dto.HoldDto;
-import com.lms.backend.library.entity.Hold;
 import com.lms.backend.library.repository.HoldRepository;
 import org.springframework.stereotype.Service;
 
@@ -58,5 +57,11 @@ public class HoldService {
     public List<HoldResponseDto> getAllHolds() {
         return holdMapper.toResponseDtoList(holdRepository.findAll());
     }
+
+    public List<HoldResponseDto> getHoldsByUser(Long userId) {
+        List<Hold> holds = holdRepository.findByUser_UserId(userId);
+        return holdMapper.toResponseDtoList(holds);
+    }
+
 
 }

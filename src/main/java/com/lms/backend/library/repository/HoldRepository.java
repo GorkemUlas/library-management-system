@@ -8,6 +8,7 @@ import java.util.List;
 public interface HoldRepository extends JpaRepository<Hold, Long> {
 
     List<Hold> findByBook_BookIdAndStatusOrderByHoldDateAsc(Long bookId, Hold.HoldStatus status);
+    List<Hold> findByUser_UserId(Long userId);
 
     boolean existsByUser_UserIdAndBook_BookIdAndStatus(Long userId, Long bookId, Hold.HoldStatus status);
     

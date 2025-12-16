@@ -54,14 +54,14 @@
     cursor: pointer;
     font-weight: 600;
     background: linear-gradient(135deg, #f6c23e, #dda20a);
-    color: #fff;
+    color: #000000;
 }
 
 .hold-btn:hover {
     opacity: 0.8;
 }
 
-.hold-btn.disabled {
-    background: #d1d3e2;
-    cursor: not-allowed;
+.hold-btn.borrow {
+    background: #6dfc79;
+    color: #000000;
 }

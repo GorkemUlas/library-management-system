@@ -18,7 +18,7 @@ export function Sidebar() {
 
     const admin = localStorage.getItem("role") == "ADMIN"
     const user = JSON.parse(localStorage.getItem("user"))
-    const navigate= useNavigate()
+    const navigate = useNavigate()
     const [sidebarBtn, setSidebarBtn] = useState(true)
 
     const sidebarBtnHandler = () => setSidebarBtn(!sidebarBtn)
@@ -45,26 +45,29 @@ export function Sidebar() {
                         <div>{sidebarBtn && "Books"}</div>
                     </li></a>
                 {
-                    admin && 
+                    admin &&
                     <a href="users">
-                    <li className="item">
-                        <div className="icon"><HiUsers /></div>
-                        <div>{sidebarBtn && "Users"}</div>
-                    </li></a>
+                        <li className="item">
+                            <div className="icon"><HiUsers /></div>
+                            <div>{sidebarBtn && "Users"}</div>
+                        </li></a>
                 }
                 {
                     admin &&
                     <a href="loans">
-                    <li className="item">
-                        <div className="icon"><MdSwapHoriz /></div>
-                        <div>{sidebarBtn && "Loans"}</div>
-                    </li></a>
+                        <li className="item">
+                            <div className="icon"><MdSwapHoriz /></div>
+                            <div>{sidebarBtn && "Loans"}</div>
+                        </li></a>
                 }
-                <a href="holds">
-                    <li className="item">
-                        <div className="icon"><MdPauseCircleOutline /></div>
-                        <div>{sidebarBtn && "Holds"}</div>
-                    </li></a>
+                {
+                    admin &&
+                    <a href="holds">
+                        <li className="item">
+                            <div className="icon"><MdPauseCircleOutline /></div>
+                            <div>{sidebarBtn && "Holds"}</div>
+                        </li></a>
+                }
 
             </ul>
             <button className="logout-btn" onClick={() => {

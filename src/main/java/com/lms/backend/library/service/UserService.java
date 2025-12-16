@@ -1,13 +1,20 @@
 package com.lms.backend.library.service;
 
 import com.lms.backend.library.dto.UserDto;
+import com.lms.backend.library.dto.UserSummaryDto;
+import com.lms.backend.library.entity.Loan;
 import com.lms.backend.library.entity.User;
 import com.lms.backend.library.mapper.UserMapper;
 import com.lms.backend.library.repository.UserRepository;
+import com.lms.backend.library.repository.LoanRepository;
+
+import org.apache.coyote.BadRequestException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -16,14 +23,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-
+    private final LoanRepository loanRepository;
     public UserService(UserRepository userRepository,
                        UserMapper userMapper,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       LoanRepository loanRepository) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
-    }
+        this.loanRepository = loanRepository;    }
 
     /**
      * Register / create user with email uniqueness checks and normalization.
@@ -31,6 +39,15 @@ public class UserService {
      */
     @Transactional
     public User createUser(UserDto dto) {
+        if (dto == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User payload is required");
+        }
+        if (dto.getEmail() == null || dto.getEmail().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is required");
+        }
+        if (dto.getPassword() == null || dto.getPassword().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is required");
+        }
         String normalizedEmail = dto.getEmail().trim().toLowerCase();
 
         // hızlı ön kontrol
@@ -59,22 +76,28 @@ public class UserService {
     }
 
     public User getUser(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
-
     public User getUserByEmail(String email) {
-    return userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
-}
+        if (email == null || email.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is required");
+        }
+        String normalizedEmail = email.trim().toLowerCase();
+        return userRepository.findByEmail(normalizedEmail)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
         userRepository.deleteById(id);
     }
-
     /**
      * Runtime exception used to signal email conflict.
      * Kept as an inner class for convenience; you can move it to its own file if preferred.
@@ -87,4 +110,21 @@ public class UserService {
             super(message, cause);
         }
     }
+
+
+    public UserSummaryDto getUserSummary(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        int totalLoans = loanRepository.countByUser_UserId(id);
+        int activeLoans = loanRepository.countByUser_UserIdAndStatus(id, Loan.LoanStatus.ACTIVE);
+        UserSummaryDto dto = new UserSummaryDto();
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setTotalLoans(totalLoans);
+        dto.setActiveLoans(activeLoans);
+
+        return dto;
+    }
+
 }
