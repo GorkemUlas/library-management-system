@@ -5,6 +5,7 @@ import com.lms.backend.library.entity.User;
 import com.lms.backend.library.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.lms.backend.library.dto.UserSummaryDto;
 
@@ -47,9 +48,10 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
     }
 
 
@@ -57,6 +59,17 @@ public class UserController {
     public UserSummaryDto getUserSummary(@PathVariable Long id) {
         return userService.getUserSummary(id);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/{userId}/role")
+    public ResponseEntity<Void> updateUserRole(
+            @PathVariable Long userId,
+            @RequestParam String role) {
+
+        userService.changeUserRole(userId, role);
+        return ResponseEntity.noContent().build();
+    }
+
 
 
 }

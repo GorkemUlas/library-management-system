@@ -70,6 +70,11 @@ public class LoanService {
         bookRepository.save(book);
 
         Loan saved = loanRepository.save(loan);
+
+        //eğer bu loanun verildiği kitap ve kullanıcı için hold açılmışsa o holdu table dan sil.
+            holdRepository.deleteByUser_UserIdAndBook_BookId(dto.getUserId(), dto.getBookId());
+
+
         return loanMapper.toResponseDto(saved);
     }
 

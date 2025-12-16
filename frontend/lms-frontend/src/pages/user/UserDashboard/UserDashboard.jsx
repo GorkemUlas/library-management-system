@@ -62,9 +62,15 @@ export function UserDashboard({triggerMessage}) {
                     </div>
 
                     <div className="components">
-                        <UserSummary activeLoans={activeLoans} holds={holds} history={history} triggerMessage={triggerMessage}/> 
+                        <UserSummary
+                            activeLoans={activeLoans}
+                            holds={holds}
+                            history={history}
+                            triggerMessage={triggerMessage}
+                        />
                     </div>
-                    
+
+
 
                 </div>
             </main>
